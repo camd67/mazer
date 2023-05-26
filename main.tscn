@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq5g1xkigtetl"]
+
+[ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="1_ojb45"]
+[ext_resource type="Script" path="res://Map.cs" id="2_utg1k"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Map" type="TileMap" parent="."]
+tile_set = ExtResource("1_ojb45")
+format = 2
+script = ExtResource("2_utg1k")
+mapSize = Vector2i(15, 15)
+patternSize = Vector2i(3, 4)
