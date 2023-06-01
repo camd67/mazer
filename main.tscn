@@ -1,13 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://bq5g1xkigtetl"]
+[gd_scene load_steps=6 format=3 uid="uid://bq5g1xkigtetl"]
 
 [ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="1_ojb45"]
+[ext_resource type="Script" path="res://LevelManager.cs" id="1_uikmx"]
+[ext_resource type="PackedScene" uid="uid://dqcy5qsyh44yc" path="res://player.tscn" id="2_fnta3"]
 [ext_resource type="Script" path="res://Map.cs" id="2_utg1k"]
+[ext_resource type="PackedScene" uid="uid://c3vvxk8otuc0s" path="res://Exit.tscn" id="3_lk865"]
 
 [node name="Main" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_uikmx")
+playerScene = ExtResource("2_fnta3")
+exitScene = ExtResource("3_lk865")
 
 [node name="Map" type="TileMap" parent="."]
 tile_set = ExtResource("1_ojb45")
 format = 2
+layer_0/name = "Base"
+layer_1/name = "Item"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array()
 script = ExtResource("2_utg1k")
-mapSize = Vector2i(15, 15)
+outerWallPaddingThickness = 5
+mapSize = Vector2i(20, 10)
 patternSize = Vector2i(3, 4)

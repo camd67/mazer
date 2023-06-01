@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqcy5qsyh44yc"]
+
+[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="1_g72ef"]
+[ext_resource type="Script" path="res://Player.cs" id="1_ju63e"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4g5of"]
+radius = 6.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 6
+motion_mode = 1
+script = ExtResource("1_ju63e")
+speed = 150.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_g72ef")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 112, 16, 16)
+
+[node name="MovementCollider" type="CollisionShape2D" parent="."]
+position = Vector2(8, 11)
+shape = SubResource("CircleShape2D_4g5of")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="Camera" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)

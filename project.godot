@@ -19,6 +19,12 @@ config/icon="res://icon.svg"
 
 project/assembly_name="mazer"
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Env"
+2d_physics/layer_3="Item"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

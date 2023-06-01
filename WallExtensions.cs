@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Godot;
 
 namespace mazer;
 
 public static class WallExtensions
 {
-
     private static readonly IReadOnlyDictionary<Wall, Wall> opposites = new Dictionary<Wall, Wall>
     {
         { Wall.Up, Wall.Down },
@@ -32,6 +30,17 @@ public static class WallExtensions
         return opposites[wall];
     }
 
+    public static bool IsDeadEnd(this Wall wall)
+    {
+        // Probably a better way, but just check all the combinations of dead ends
+        return
+            wall is (Wall.All & ~Wall.Up)
+                or (Wall.All & ~Wall.Down)
+                or (Wall.All & ~Wall.Left)
+                or (Wall.All & ~Wall.Right)
+            ;
+    }
+
     public static string AsString(this Wall[,] maze)
     {
         var output = new StringBuilder();
@@ -52,6 +61,7 @@ public static class WallExtensions
 
             output.Append('\n');
         }
+
         return output.ToString();
     }
 }
