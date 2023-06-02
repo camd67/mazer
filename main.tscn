@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bq5g1xkigtetl"]
+[gd_scene load_steps=7 format=3 uid="uid://bq5g1xkigtetl"]
 
 [ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="1_ojb45"]
 [ext_resource type="Script" path="res://LevelManager.cs" id="1_uikmx"]
 [ext_resource type="PackedScene" uid="uid://dqcy5qsyh44yc" path="res://player.tscn" id="2_fnta3"]
 [ext_resource type="Script" path="res://Map.cs" id="2_utg1k"]
 [ext_resource type="PackedScene" uid="uid://c3vvxk8otuc0s" path="res://Exit.tscn" id="3_lk865"]
+[ext_resource type="Script" path="res://TimerLabel.cs" id="6_1tp2y"]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -25,5 +26,23 @@ layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array()
 script = ExtResource("2_utg1k")
 outerWallPaddingThickness = 5
-mapSize = Vector2i(20, 10)
+mapSize = Vector2i(5, 5)
 patternSize = Vector2i(3, 4)
+
+[node name="GlobalUi" type="CanvasLayer" parent="."]
+
+[node name="TimerLabel" type="Label" parent="GlobalUi"]
+offset_right = 78.0
+offset_bottom = 26.0
+text = "00:00.000"
+script = ExtResource("6_1tp2y")
+
+[node name="ColorRect" type="ColorRect" parent="GlobalUi/TimerLabel"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
