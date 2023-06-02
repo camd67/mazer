@@ -2,3 +2,4 @@
 .godot/
 .idea
 log.txt
+*.old.1
