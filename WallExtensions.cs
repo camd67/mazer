@@ -5,15 +5,63 @@ namespace mazer;
 
 public static class WallExtensions
 {
-    private static readonly IReadOnlyDictionary<Wall, Wall> opposites = new Dictionary<Wall, Wall>
+    private static readonly IReadOnlyDictionary<Wall, Wall> Opposites = new Dictionary<Wall, Wall>
     {
+        // Basic inversions (only these contain all / none
         { Wall.Up, Wall.Down },
         { Wall.Down, Wall.Up },
         { Wall.Left, Wall.Right },
         { Wall.Right, Wall.Left },
         { Wall.None, Wall.All },
         { Wall.All, Wall.None },
+
+        // Pair inversions
+        { Wall.Up | Wall.Down, Wall.Left | Wall.Right },
+        { Wall.Up | Wall.Left, Wall.Down | Wall.Right },
+        { Wall.Up | Wall.Right, Wall.Left | Wall.Down },
+        { Wall.Down | Wall.Right, Wall.Left | Wall.Up },
+        { Wall.Down | Wall.Left, Wall.Right | Wall.Up },
+        { Wall.Left | Wall.Right, Wall.Up | Wall.Down },
+
+        // Triplet inversions (dead ends)
+        { Wall.Up | Wall.Left | Wall.Down, Wall.Right },
+        { Wall.Up | Wall.Right | Wall.Down, Wall.Left },
+        { Wall.Up | Wall.Left | Wall.Right, Wall.Down },
+        { Wall.Right | Wall.Left | Wall.Down, Wall.Up },
     };
+
+    public static readonly IReadOnlyList<Wall> CardinalDirs = new[]
+    {
+        Wall.Up,
+        Wall.Right,
+        Wall.Down,
+        Wall.Left,
+    };
+
+    private static readonly IReadOnlyDictionary<Wall, string> WallAscii = new Dictionary<Wall, string>
+    {
+        { Wall.Right | Wall.Left | Wall.Down, "╹" },
+        { Wall.Up | Wall.Left | Wall.Right, "╻" },
+        { Wall.Up | Wall.Right | Wall.Down, "╸" },
+        { Wall.Up | Wall.Left | Wall.Down, "╺" },
+        { Wall.None, "╬" },
+        { Wall.All, "█" },
+        { Wall.Left | Wall.Right, "║" },
+        { Wall.Down | Wall.Right, "╝" },
+        { Wall.Down | Wall.Left, "╚" },
+        { Wall.Up | Wall.Left, "╔" },
+        { Wall.Up | Wall.Right, "╗" },
+        { Wall.Up | Wall.Down, "═" },
+        { Wall.Right, "╣" },
+        { Wall.Left, "╠" },
+        { Wall.Down, "╩" },
+        { Wall.Up, "╦" },
+    };
+
+    public static bool Has(this Wall wall, Wall mask)
+    {
+        return (wall & mask) == mask;
+    }
 
     public static Wall With(this Wall wall, Wall mask)
     {
@@ -27,7 +75,7 @@ public static class WallExtensions
 
     public static Wall Invert(this Wall wall)
     {
-        return opposites[wall];
+        return Opposites[wall];
     }
 
     public static bool IsDeadEnd(this Wall wall)
@@ -57,6 +105,25 @@ public static class WallExtensions
                 output.Append(wall.HasFlag(Wall.Left) ? 'L' : ' ');
                 output.Append(')');
                 output.Append(", ");
+            }
+
+            output.Append('\n');
+        }
+
+        return output.ToString();
+    }
+
+    public static string AsAscii(this Wall[,] maze)
+    {
+        var output = new StringBuilder();
+
+        for (var y = 0; y < maze.GetLength(1); y++)
+        {
+            for (var x = 0; x < maze.GetLength(0); x++)
+            {
+                var wall = maze[x, y];
+
+                output.Append(WallAscii[wall]);
             }
 
             output.Append('\n');

@@ -3,7 +3,7 @@ using Godot;
 
 namespace mazer;
 
-public partial class Map : TileMap
+public partial class Maze : TileMap
 {
     [Signal]
     public delegate void MazeGeneratedEventHandler(Vector2I startingLocation, Vector2I exitLocation);
@@ -17,7 +17,19 @@ public partial class Map : TileMap
     private Vector2I mapSize;
 
     [Export]
+    private int deadEndsToTrim;
+
+    [Export]
     private Vector2I patternSize;
+
+    [Export]
+    private int roomGenerationAttempts;
+
+    [Export]
+    private Vector2I maxRoomSize;
+
+    [Export]
+    private Vector2I minRoomSize;
 
     private IReadOnlyDictionary<Wall, TileMapPattern> wallToAtlas;
 
@@ -28,7 +40,13 @@ public partial class Map : TileMap
 
     public void GenerateMaze()
     {
-        var mazeGenerator = new MazeGenerator(mapSize);
+        var mazeGenerator = new MazeGenerator(
+            bounds: mapSize,
+            deadEndsToTrim: deadEndsToTrim,
+            roomGenerationAttempts: roomGenerationAttempts,
+            maxRoomSize: maxRoomSize,
+            minRoomSize: minRoomSize
+        );
         var maze = mazeGenerator.GenerateMaze();
 
         var width = maze.GetLength(0);

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dqcy5qsyh44yc"]
 
-[ext_resource type="Script" path="res://Player.cs" id="1_tqftw"]
-[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="2_q1p6j"]
+[ext_resource type="Script" path="res://Player.cs" id="1_1oqyx"]
+[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="2_rq78c"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4g5of"]
 radius = 6.0
@@ -18,11 +18,11 @@ fill_from = Vector2(0.5, 0.5)
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 6
 motion_mode = 1
-script = ExtResource("1_tqftw")
+script = ExtResource("1_1oqyx")
 speed = 150.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_q1p6j")
+texture = ExtResource("2_rq78c")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 112, 16, 16)

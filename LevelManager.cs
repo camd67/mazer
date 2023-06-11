@@ -10,29 +10,29 @@ public partial class LevelManager : Node2D
     [Export]
     private PackedScene exitScene;
 
-    private Map map;
+    private Maze maze;
     private TimerLabel timerLabel;
 
     public override void _Ready()
     {
         timerLabel = GetNode<TimerLabel>("GlobalUi/TimerLabel");
 
-        map = GetNode<Map>("Map");
-        map.MazeGenerated += HandleMazeGenerated;
+        maze = GetNode<Maze>("Maze");
+        maze.MazeGenerated += HandleMazeGenerated;
 
-        map.GenerateMaze();
+        maze.GenerateMaze();
     }
 
     private void HandleMazeGenerated(Vector2I startingLocation, Vector2I exitLocation)
     {
         var player = playerScene.Instantiate<Player>();
         AddChild(player);
-        player.GlobalPosition = map.LocationToGlobal(startingLocation);
+        player.GlobalPosition = maze.LocationToGlobal(startingLocation);
 
         var exit = exitScene.Instantiate<Area2D>();
         AddChild(exit);
         // TODO: What if this is the player position?
-        exit.GlobalPosition = map.LocationToGlobal(exitLocation);
+        exit.GlobalPosition = maze.LocationToGlobal(exitLocation);
         exit.BodyEntered += body =>
         {
             if (body == player)
