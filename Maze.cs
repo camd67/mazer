@@ -54,13 +54,11 @@ public partial class Maze : TileMap
 
         DrawMaze(maze);
         DrawOuterPaddingWalls(width, height);
-        // GD.Print(maze.AsString());
 
         // Choose a random starting location, which needs to be on the perimeter of the maze
-        var startingLocation = MazeGenerator.GenerateRandomEdgeCell(mapSize);
-        AddEntrance(startingLocation, maze);
+        var startingLocation = mazeGenerator.GenerateRandomRoomLocation();
 
-        var exitLocation = mazeGenerator.GenerateExitLocation();
+        var exitLocation = mazeGenerator.GenerateRandomRoomLocation();
 
         EmitSignal(SignalName.MazeGenerated, startingLocation, exitLocation);
     }
@@ -108,33 +106,6 @@ public partial class Maze : TileMap
                 );
             }
         }
-    }
-
-    private void AddEntrance(Vector2I startingLocation, Wall[,] maze)
-    {
-        var wallAtEntrance = maze[startingLocation.X, startingLocation.Y];
-        var mapEdge = Wall.None;
-
-        if (startingLocation.X == 0)
-        {
-            mapEdge = Wall.Left;
-        }
-        else if (startingLocation.X == mapSize.X - 1)
-        {
-            mapEdge = Wall.Right;
-        }
-        else if (startingLocation.Y == 0)
-        {
-            mapEdge = Wall.Up;
-        }
-        else if (startingLocation.Y == mapSize.Y - 1)
-        {
-            mapEdge = Wall.Down;
-        }
-
-        // Selectively replace the walls of the maze with a door pattern
-        // We want to be careful about replacing walls so they flow correctly
-        // TODO: Place patterns correctly
     }
 
     private void DrawMaze(Wall[,] maze)

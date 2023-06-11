@@ -1,35 +1,35 @@
 [gd_scene load_steps=5 format=3 uid="uid://sxgxf4b74er4"]
 
-[ext_resource type="Script" path="res://MazeViewer.cs" id="1_lpbqd"]
-[ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="2_37fex"]
-[ext_resource type="Script" path="res://Maze.cs" id="3_gv173"]
-[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="4_oicgs"]
+[ext_resource type="Script" path="res://MazeViewer.cs" id="1_jxb53"]
+[ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="2_381og"]
+[ext_resource type="Script" path="res://Maze.cs" id="3_n3vtr"]
+[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="4_atech"]
 
 [node name="MazeViewer" type="Node2D"]
 texture_filter = 1
-script = ExtResource("1_lpbqd")
+script = ExtResource("1_jxb53")
 
 [node name="Maze" type="TileMap" parent="."]
-tile_set = ExtResource("2_37fex")
+tile_set = ExtResource("2_381og")
 format = 2
-script = ExtResource("3_gv173")
+script = ExtResource("3_n3vtr")
 outerWallPaddingThickness = 2
 mapSize = Vector2i(50, 20)
-deadEndsToTrim = 50
+deadEndsToTrim = -1
 patternSize = Vector2i(3, 4)
-roomGenerationAttempts = 100
+roomGenerationAttempts = 10
 maxRoomSize = Vector2i(10, 6)
 minRoomSize = Vector2i(2, 2)
 
 [node name="Player" type="Sprite2D" parent="."]
-texture = ExtResource("4_oicgs")
+texture = ExtResource("4_atech")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 112, 16, 16)
 
 [node name="Exit" type="Sprite2D" parent="."]
 position = Vector2(25, 0)
-texture = ExtResource("4_oicgs")
+texture = ExtResource("4_atech")
 centered = false
 region_enabled = true
 region_rect = Rect2(80, 112, 16, 16)

@@ -1,21 +1,21 @@
 [gd_scene load_steps=7 format=3 uid="uid://b6d3pgllrkbfx"]
 
-[ext_resource type="Script" path="res://LevelManager.cs" id="1_63n1g"]
-[ext_resource type="PackedScene" uid="uid://dqcy5qsyh44yc" path="res://player.tscn" id="2_8630e"]
-[ext_resource type="PackedScene" uid="uid://c3vvxk8otuc0s" path="res://Exit.tscn" id="3_vgk1a"]
-[ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="4_qf27p"]
-[ext_resource type="Script" path="res://Maze.cs" id="5_l6r6b"]
-[ext_resource type="Script" path="res://TimerLabel.cs" id="6_hvqq7"]
+[ext_resource type="Script" path="res://LevelManager.cs" id="1_nmq2d"]
+[ext_resource type="PackedScene" uid="uid://dqcy5qsyh44yc" path="res://player.tscn" id="2_8o822"]
+[ext_resource type="PackedScene" uid="uid://c3vvxk8otuc0s" path="res://Exit.tscn" id="3_3pxp2"]
+[ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="4_ruw02"]
+[ext_resource type="Script" path="res://Maze.cs" id="5_h342x"]
+[ext_resource type="Script" path="res://TimerLabel.cs" id="6_748so"]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
-script = ExtResource("1_63n1g")
-playerScene = ExtResource("2_8630e")
-exitScene = ExtResource("3_vgk1a")
+script = ExtResource("1_nmq2d")
+playerScene = ExtResource("2_8o822")
+exitScene = ExtResource("3_3pxp2")
 
 [node name="Maze" type="TileMap" parent="."]
 light_mask = 2
-tile_set = ExtResource("4_qf27p")
+tile_set = ExtResource("4_ruw02")
 format = 2
 layer_0/name = "Base"
 layer_1/name = "Item"
@@ -25,7 +25,7 @@ layer_1/y_sort_enabled = false
 layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array()
-script = ExtResource("5_l6r6b")
+script = ExtResource("5_h342x")
 outerWallPaddingThickness = 5
 mapSize = Vector2i(50, 20)
 patternSize = Vector2i(3, 4)
@@ -39,7 +39,7 @@ minRoomSize = Vector2i(2, 2)
 offset_right = 78.0
 offset_bottom = 26.0
 text = "00:00.000"
-script = ExtResource("6_hvqq7")
+script = ExtResource("6_748so")
 
 [node name="ColorRect" type="ColorRect" parent="GlobalUi/TimerLabel"]
 z_index = -1

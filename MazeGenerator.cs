@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Godot;
-using Environment = System.Environment;
 
 namespace mazer;
 
@@ -41,6 +39,8 @@ public class MazeGenerator
     ///     If this number is too high eventually the whole maze will
     ///     be consumed since technically everything is a "dead end"
     ///     eventually.
+    ///
+    ///     Pass in -1 to consume all possible dead ends
     /// </summary>
     private readonly int deadEndsToTrim;
 
@@ -54,6 +54,8 @@ public class MazeGenerator
     /// </summary>
     private readonly Vector2I minRoomSize;
 
+    private readonly Dictionary<Vector2I, int> regionsByPos = new();
+
     /// <summary>
     ///     The number of attempts to generate rooms.
     ///     This doesn't mean that if we have 200 attempts we'll get
@@ -64,10 +66,9 @@ public class MazeGenerator
 
     private int currentRegion;
 
-    private List<Vector2I> knownDeadEnds = new();
     private Wall[,] maze;
-    private readonly Dictionary<Vector2I, int> regionsByPos = new();
     private HashSet<Vector2I> visitedSpaces;
+    private List<Rect2I> rooms = new();
 
     public MazeGenerator(
         Vector2I bounds,
@@ -77,30 +78,10 @@ public class MazeGenerator
         Vector2I minRoomSize)
     {
         this.bounds = bounds;
-        this.deadEndsToTrim = deadEndsToTrim;
+        this.deadEndsToTrim = deadEndsToTrim == -1 ? int.MaxValue : deadEndsToTrim;
         this.maxRoomSize = maxRoomSize;
         this.minRoomSize = minRoomSize;
         this.roomGenerationAttempts = roomGenerationAttempts;
-    }
-
-    public static Vector2I GenerateRandomEdgeCell(Vector2I bounds)
-    {
-        var edge = GD.Randi() % 4;
-        var location = new Vector2I();
-
-        switch (edge)
-        {
-            // Top or bottom
-            case 0 or 2:
-                location.X = GD.RandRange(0, bounds.X - 1);
-                break;
-            // Right or left
-            case 1 or 3:
-                location.Y = GD.RandRange(0, bounds.Y - 1);
-                break;
-        }
-
-        return location;
     }
 
     private bool IsInBounds(int x, int y)
@@ -201,12 +182,14 @@ public class MazeGenerator
                 {
                     continue;
                 }
+
                 wallsForJoint[location] = joinedWalls;
 
                 if (!jointsByRegion.ContainsKey(regionsByPos[location]))
                 {
                     jointsByRegion[regionsByPos[location]] = new List<Vector2I>();
                 }
+
                 jointsByRegion[regionsByPos[location]].Add(location);
                 regionsByJoint[location] = otherRegions;
             }
@@ -231,6 +214,7 @@ public class MazeGenerator
                 {
                     throw new Exception("Map gen resulted in broken down wall with no valid region on other side");
                 }
+
                 wall = RngUtil.Pick(wallsForThisJoint);
                 wallsForThisJoint.Remove(wall);
                 otherSide = WallToDirection[wall] + joint;
@@ -297,6 +281,8 @@ public class MazeGenerator
             // Make sure we have space for this room
             if (ValidateRoomFits(roomLocation, roomSize))
             {
+                rooms.Add(new Rect2I(roomLocation, roomSize));
+
                 // Add room
                 for (var xSize = 0; xSize < roomSize.X; xSize++)
                 {
@@ -415,20 +401,33 @@ public class MazeGenerator
                 visitedSpaces.Add(nextCell);
                 cellsToProcess.Push(nextCell);
             }
-            else if (maze[currentCell.X, currentCell.Y].IsDeadEnd())
+        }
+    }
+
+    private List<Vector2I> CollectDeadEnds()
+    {
+        var knownDeadEnds = new List<Vector2I>();
+        for (var x = 0; x < bounds.X; x++)
+        {
+            for (var y = 0; y < bounds.Y; y++)
             {
-                knownDeadEnds.Add(currentCell);
+                if (maze[x, y].IsDeadEnd())
+                {
+                    knownDeadEnds.Add(new Vector2I(x, y));
+                }
             }
         }
+
+        return knownDeadEnds;
     }
 
     private void TrimDeadEnds()
     {
+        var knownDeadEnds = CollectDeadEnds();
         // Make sure this is a queue not a stack/list so that we don't re-process the same dead end over and over
         // instead we'll spread the trimming out across the whole maze
         var deadEndQueue = new Queue<Vector2I>(knownDeadEnds);
         var currentDeadEndsTrimmed = 0;
-
 
         while (deadEndQueue.Count > 0 && currentDeadEndsTrimmed < deadEndsToTrim)
         {
@@ -474,7 +473,6 @@ public class MazeGenerator
                     nextCell = new Vector2I(deadEnd.X - 1, deadEnd.Y);
                     maze[nextCell.X, nextCell.Y] = maze[nextCell.X, nextCell.Y].With(Wall.Right);
                     break;
-
                 case Wall.None:
                 case Wall.All:
                     // Fix up our uninitialized state by re-checking our current cell.
@@ -482,7 +480,9 @@ public class MazeGenerator
                     nextCell = deadEnd;
                     // No walls and all walls... shouldn't have happened.
                     // but if they do we can just ignore it
-                    GD.PushWarning("Ran into a none or all wall processing dead end " + deadEnd + ". This may be an issue.");
+                    GD.PushWarning(
+                        "Ran into a none or all wall processing dead end " + deadEnd + ". This may be an issue."
+                    );
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -496,9 +496,6 @@ public class MazeGenerator
 
             currentDeadEndsTrimmed++;
         }
-
-        // Move our known dead end queue back into the list so we have a record of them
-        knownDeadEnds = new List<Vector2I>(deadEndQueue);
     }
 
     private Wall[,] InitMaze()
@@ -516,9 +513,8 @@ public class MazeGenerator
         return newMaze;
     }
 
-    public Vector2I GenerateExitLocation()
+    public Vector2I GenerateRandomRoomLocation()
     {
-        // Choose a dead end at random
-        return knownDeadEnds[GD.RandRange(0, knownDeadEnds.Count - 1)];
+        return RngUtil.Pick(rooms).RandPointIn();
     }
 }

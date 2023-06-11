@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=42 format=3 uid="uid://biqfnjlpwjs43"]
 
-[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="1_vgd4r"]
+[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="1_mrn7o"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_5c06t"]
 tile_data = PackedInt32Array(0, 327681, 1, 65536, 131073, 1, 131072, 65537, 4, 196608, 327681, 0, 1, 1, 4, 65537, 65537, 4, 131073, 65537, 4, 196609, 1, 4, 2, 262145, 1, 65538, 131073, 1, 131074, 1, 4, 196610, 262145, 0)
@@ -119,7 +119,7 @@ polygon = PackedVector2Array(-8, 4, -2, 4, 0, 8, -8, 8)
 polygon = PackedVector2Array(-8, -8, 0, -8, -2, -4, -8, -2)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kbjuj"]
-texture = ExtResource("1_vgd4r")
+texture = ExtResource("1_mrn7o")
 0:0/0 = 0
 0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_bqi6e")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
