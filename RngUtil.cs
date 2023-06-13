@@ -12,4 +12,13 @@ public static class RngUtil
     {
         return values[GD.RandRange(0, values.Count - 1)];
     }
+
+    /// <summary>
+    /// Returns true approximately 1 in count times
+    /// </summary>
+    public static bool OneIn(int count)
+    {
+        var chance = 1.0 / count;
+        return GD.Randf() < chance;
+    }
 }

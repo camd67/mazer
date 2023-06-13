@@ -2,4 +2,5 @@
 .godot/
 .idea
 log.txt
-*.old.1
+*.csproj.old
+*.csproj.old.*

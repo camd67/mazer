@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Godot;
 
 namespace mazer;
@@ -7,8 +6,6 @@ public partial class Maze : TileMap
 {
     [Signal]
     public delegate void MazeGeneratedEventHandler(Vector2I startingLocation, Vector2I exitLocation);
-
-    private IReadOnlyDictionary<Wall, TileMapPattern> entranceAtlas;
 
     [Export]
     private int outerWallPaddingThickness;
@@ -20,9 +17,6 @@ public partial class Maze : TileMap
     private int deadEndsToTrim;
 
     [Export]
-    private Vector2I patternSize;
-
-    [Export]
     private int roomGenerationAttempts;
 
     [Export]
@@ -31,11 +25,12 @@ public partial class Maze : TileMap
     [Export]
     private Vector2I minRoomSize;
 
-    private IReadOnlyDictionary<Wall, TileMapPattern> wallToAtlas;
+    private PatternManager patternManager;
 
     public override void _Ready()
     {
-        InitAtlasMaps();
+        patternManager = GD.Load<PackedScene>("res://pattern_management.tscn").Instantiate<PatternManager>();
+        patternManager.Init();
     }
 
     public void GenerateMaze()
@@ -70,19 +65,11 @@ public partial class Maze : TileMap
         {
             for (var y = -outerWallPaddingThickness; y < 0; y++)
             {
-                SetPattern(
-                    0,
-                    new Vector2I(x, y) * patternSize,
-                    wallToAtlas[Wall.All]
-                );
+                patternManager.DrawCell(Wall.All, new Vector2I(x, y), this);
             }
             for (var y = height; y < height + outerWallPaddingThickness; y++)
             {
-                SetPattern(
-                    0,
-                    new Vector2I(x, y) * patternSize,
-                    wallToAtlas[Wall.All]
-                );
+                patternManager.DrawCell(Wall.All, new Vector2I(x, y), this);
             }
         }
 
@@ -91,19 +78,11 @@ public partial class Maze : TileMap
         {
             for (var x = -outerWallPaddingThickness; x < 0; x++)
             {
-                SetPattern(
-                    0,
-                    new Vector2I(x, y) * patternSize,
-                    wallToAtlas[Wall.All]
-                );
+                patternManager.DrawCell(Wall.All, new Vector2I(x, y), this);
             }
             for (var x = width; x < width + outerWallPaddingThickness; x++)
             {
-                SetPattern(
-                    0,
-                    new Vector2I(x, y) * patternSize,
-                    wallToAtlas[Wall.All]
-                );
+                patternManager.DrawCell(Wall.All, new Vector2I(x, y), this);
             }
         }
     }
@@ -117,55 +96,20 @@ public partial class Maze : TileMap
         {
             for (var y = 0; y < height; y++)
             {
-                SetPattern(
-                    0,
-                    new Vector2I(x, y) * patternSize,
-                    wallToAtlas[maze[x, y]]
-                );
+                patternManager.DrawCell(maze[x, y], new Vector2I(x, y), this);
+
+                if (x >= 1 && y >= 1)
+                {
+                    // return;
+                }
             }
         }
     }
 
-    private void InitAtlasMaps()
-    {
-        var patternIndex = 0;
-        wallToAtlas = new Dictionary<Wall, TileMapPattern>
-        {
-            { Wall.None, TileSet.GetPattern(patternIndex++) },
-            { Wall.Up, TileSet.GetPattern(patternIndex++) },
-            { Wall.Right, TileSet.GetPattern(patternIndex++) },
-            { Wall.Up | Wall.Right, TileSet.GetPattern(patternIndex++) },
-            { Wall.Down, TileSet.GetPattern(patternIndex++) },
-            { Wall.Up | Wall.Down, TileSet.GetPattern(patternIndex++) },
-            { Wall.Right | Wall.Down, TileSet.GetPattern(patternIndex++) },
-            { Wall.Up | Wall.Down | Wall.Right, TileSet.GetPattern(patternIndex++) },
-            { Wall.Left, TileSet.GetPattern(patternIndex++) },
-            { Wall.Left | Wall.Up, TileSet.GetPattern(patternIndex++) },
-            { Wall.Left | Wall.Right, TileSet.GetPattern(patternIndex++) },
-            { Wall.Left | Wall.Right | Wall.Up, TileSet.GetPattern(patternIndex++) },
-            { Wall.Left | Wall.Down, TileSet.GetPattern(patternIndex++) },
-            { Wall.Up | Wall.Left | Wall.Down, TileSet.GetPattern(patternIndex++) },
-            { Wall.Left | Wall.Down | Wall.Right, TileSet.GetPattern(patternIndex++) },
-            { Wall.All, TileSet.GetPattern(patternIndex++) },
-        };
-
-        entranceAtlas = new Dictionary<Wall, TileMapPattern>
-        {
-            { Wall.Up, TileSet.GetPattern(patternIndex++) },
-            { Wall.Left, TileSet.GetPattern(patternIndex++) },
-            { Wall.Right, TileSet.GetPattern(patternIndex++) },
-            { Wall.Down, TileSet.GetPattern(patternIndex++) },
-            { Wall.Down | Wall.Right | Wall.Left, TileSet.GetPattern(patternIndex++) },
-            { Wall.Down | Wall.Left, TileSet.GetPattern(patternIndex++) },
-            { Wall.Down | Wall.Right, TileSet.GetPattern(patternIndex++) },
-            { Wall.Down | Wall.Right | Wall.Up, TileSet.GetPattern(patternIndex++) },
-        };
-    }
-
     public Vector2 LocationToGlobal(Vector2I location)
     {
-        var topLeftOffsetVector = TileSet.TileSize * patternSize;
-        var halfOffsetVector = TileSet.TileSize * (patternSize / 2);
+        var topLeftOffsetVector = TileSet.TileSize * patternManager.patternSize;
+        var halfOffsetVector = TileSet.TileSize * (patternManager.patternSize / 2);
         var global = location * topLeftOffsetVector + halfOffsetVector;
         // The center of the cell is always a safe play to place something
         return global;
