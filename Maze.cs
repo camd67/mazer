@@ -8,22 +8,22 @@ public partial class Maze : TileMap
     public delegate void MazeGeneratedEventHandler(Vector2I startingLocation, Vector2I exitLocation);
 
     [Export]
-    private int outerWallPaddingThickness;
-
-    [Export]
-    private Vector2I mapSize;
-
-    [Export]
     private int deadEndsToTrim;
 
     [Export]
-    private int roomGenerationAttempts;
+    private Vector2I mapSize;
 
     [Export]
     private Vector2I maxRoomSize;
 
     [Export]
     private Vector2I minRoomSize;
+
+    [Export]
+    private int outerWallPaddingThickness;
+
+    [Export]
+    private int roomGenerationAttempts;
 
     private PatternManager patternManager;
 
@@ -36,11 +36,11 @@ public partial class Maze : TileMap
     public void GenerateMaze()
     {
         var mazeGenerator = new MazeGenerator(
-            bounds: mapSize,
-            deadEndsToTrim: deadEndsToTrim,
-            roomGenerationAttempts: roomGenerationAttempts,
-            maxRoomSize: maxRoomSize,
-            minRoomSize: minRoomSize
+            mapSize,
+            deadEndsToTrim,
+            roomGenerationAttempts,
+            maxRoomSize,
+            minRoomSize
         );
         var maze = mazeGenerator.GenerateMaze();
 
@@ -49,6 +49,7 @@ public partial class Maze : TileMap
 
         DrawMaze(maze);
         DrawOuterPaddingWalls(width, height);
+        CleanupRooms(mazeGenerator);
 
         // Choose a random starting location, which needs to be on the perimeter of the maze
         var startingLocation = mazeGenerator.GenerateRandomRoomLocation();
@@ -56,6 +57,14 @@ public partial class Maze : TileMap
         var exitLocation = mazeGenerator.GenerateRandomRoomLocation();
 
         EmitSignal(SignalName.MazeGenerated, startingLocation, exitLocation);
+    }
+
+    private void CleanupRooms(MazeGenerator mazeGenerator)
+    {
+        foreach (var room in mazeGenerator.rooms)
+        {
+            patternManager.DrawFloor(room, this);
+        }
     }
 
     private void DrawOuterPaddingWalls(int width, int height)
@@ -67,6 +76,7 @@ public partial class Maze : TileMap
             {
                 patternManager.DrawCell(Wall.All, new Vector2I(x, y), this);
             }
+
             for (var y = height; y < height + outerWallPaddingThickness; y++)
             {
                 patternManager.DrawCell(Wall.All, new Vector2I(x, y), this);
@@ -80,6 +90,7 @@ public partial class Maze : TileMap
             {
                 patternManager.DrawCell(Wall.All, new Vector2I(x, y), this);
             }
+
             for (var x = width; x < width + outerWallPaddingThickness; x++)
             {
                 patternManager.DrawCell(Wall.All, new Vector2I(x, y), this);
@@ -96,14 +107,20 @@ public partial class Maze : TileMap
         {
             for (var y = 0; y < height; y++)
             {
-                patternManager.DrawCell(maze[x, y], new Vector2I(x, y), this);
-
-                if (x >= 1 && y >= 1)
-                {
-                    // return;
-                }
+                var wall = maze[x, y];
+                var pos = new Vector2I(x, y);
+                patternManager.DrawCell(wall, pos, this);
             }
         }
+    }
+
+    /// <summary>
+    ///     Safely gets the given coords from the maze.
+    ///     If the coords are not in bounds then Wall.All is returned.
+    /// </summary>
+    private Wall SafeGetWall(int x, int y, Wall[,] maze)
+    {
+        return maze.IsInBounds(x, y) ? maze[x, y] : Wall.All;
     }
 
     public Vector2 LocationToGlobal(Vector2I location)

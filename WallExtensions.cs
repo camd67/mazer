@@ -131,4 +131,12 @@ public static class WallExtensions
 
         return output.ToString();
     }
+
+    public static bool IsInBounds(this Wall[,] maze, int x, int y)
+    {
+        return x > 0
+               && x < maze.GetLength(0)
+               && y > 0
+               && y < maze.GetLength(1);
+    }
 }

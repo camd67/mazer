@@ -68,7 +68,8 @@ public class MazeGenerator
 
     private Wall[,] maze;
     private HashSet<Vector2I> visitedSpaces;
-    private List<Rect2I> rooms = new();
+
+    public readonly List<Rect2I> rooms = new();
 
     public MazeGenerator(
         Vector2I bounds,

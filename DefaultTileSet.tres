@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=18 format=3 uid="uid://biqfnjlpwjs43"]
 
-[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="1_ba814"]
+[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="1_qfmgj"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_bqi6e"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -47,7 +47,7 @@ polygon = PackedVector2Array(-8, 4, -2, 4, 0, 8, -8, 8)
 polygon = PackedVector2Array(-8, -8, 0, -8, -2, -4, -8, -2)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kbjuj"]
-texture = ExtResource("1_ba814")
+texture = ExtResource("1_qfmgj")
 0:0/0 = 0
 0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_bqi6e")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -243,18 +243,35 @@ texture = ExtResource("1_ba814")
 1:4/0 = 0
 1:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:4/0/physics_layer_0/angular_velocity = 0.0
+2:4/next_alternative_id = 2
 2:4/0 = 0
 2:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:4/0/physics_layer_0/angular_velocity = 0.0
+2:4/1 = 1
+2:4/1/flip_h = true
+2:4/1/transpose = true
+2:4/1/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:4/1/physics_layer_0/angular_velocity = 0.0
 3:4/0 = 0
 3:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:4/0/physics_layer_0/angular_velocity = 0.0
 4:4/0 = 0
 4:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 4:4/0/physics_layer_0/angular_velocity = 0.0
+5:4/next_alternative_id = 4
 5:4/0 = 0
 5:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 5:4/0/physics_layer_0/angular_velocity = 0.0
+5:4/1 = 1
+5:4/1/flip_h = true
+5:4/1/flip_v = true
+5:4/1/transpose = true
+5:4/1/physics_layer_0/linear_velocity = Vector2(0, 0)
+5:4/1/physics_layer_0/angular_velocity = 0.0
+5:4/2 = 2
+5:4/2/flip_h = true
+5:4/2/physics_layer_0/linear_velocity = Vector2(0, 0)
+5:4/2/physics_layer_0/angular_velocity = 0.0
 6:4/0 = 0
 6:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 6:4/0/physics_layer_0/angular_velocity = 0.0
