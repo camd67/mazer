@@ -7,6 +7,19 @@ public partial class Player : CharacterBody2D
     [Export]
     private float speed = 300;
 
+    private AnimationPlayer animationPlayer;
+
+    public override void _Ready()
+    {
+        animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        animationPlayer.AssignedAnimation = "bounce_move";
+    }
+
+    public override void _Process(double delta)
+    {
+        ManageAnimationPlayback();
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         var velocity = Velocity;
@@ -25,5 +38,20 @@ public partial class Player : CharacterBody2D
 
         Velocity = velocity;
         MoveAndSlide();
+    }
+
+    private void ManageAnimationPlayback()
+    {
+        if (Velocity.IsZeroApprox())
+        {
+            if (animationPlayer.IsPlaying())
+            {
+                animationPlayer.Stop();
+            }
+        }
+        else if (!animationPlayer.IsPlaying())
+        {
+            animationPlayer.Play();
+        }
     }
 }

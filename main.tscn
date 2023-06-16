@@ -1,21 +1,21 @@
 [gd_scene load_steps=7 format=3 uid="uid://b6d3pgllrkbfx"]
 
-[ext_resource type="Script" path="res://LevelManager.cs" id="1_8gxrc"]
-[ext_resource type="PackedScene" uid="uid://dqcy5qsyh44yc" path="res://player.tscn" id="2_v0e67"]
-[ext_resource type="PackedScene" uid="uid://c3vvxk8otuc0s" path="res://Exit.tscn" id="3_3vj70"]
-[ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="4_u5jfs"]
-[ext_resource type="Script" path="res://Maze.cs" id="5_6q1rt"]
-[ext_resource type="Script" path="res://TimerLabel.cs" id="6_5gc23"]
+[ext_resource type="Script" path="res://LevelManager.cs" id="1_unn20"]
+[ext_resource type="PackedScene" uid="uid://dqcy5qsyh44yc" path="res://player.tscn" id="2_4s1ln"]
+[ext_resource type="PackedScene" uid="uid://c3vvxk8otuc0s" path="res://Exit.tscn" id="3_ck1pt"]
+[ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="4_xavsp"]
+[ext_resource type="Script" path="res://Maze.cs" id="5_wd7qv"]
+[ext_resource type="Script" path="res://TimerLabel.cs" id="6_74c5o"]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
-script = ExtResource("1_8gxrc")
-playerScene = ExtResource("2_v0e67")
-exitScene = ExtResource("3_3vj70")
+script = ExtResource("1_unn20")
+playerScene = ExtResource("2_4s1ln")
+exitScene = ExtResource("3_ck1pt")
 
 [node name="Maze" type="TileMap" parent="."]
 light_mask = 2
-tile_set = ExtResource("4_u5jfs")
+tile_set = ExtResource("4_xavsp")
 format = 2
 layer_0/name = "Base"
 layer_1/name = "Item"
@@ -25,12 +25,12 @@ layer_1/y_sort_enabled = false
 layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array()
-script = ExtResource("5_6q1rt")
+script = ExtResource("5_wd7qv")
 mapSize = Vector2i(50, 20)
-maxRoomSize = Vector2i(5, 3)
+maxRoomSize = Vector2i(10, 8)
 minRoomSize = Vector2i(2, 2)
 outerWallPaddingThickness = 5
-roomGenerationAttempts = 10
+roomGenerationAttempts = 100
 
 [node name="GlobalUi" type="CanvasLayer" parent="."]
 
@@ -38,7 +38,7 @@ roomGenerationAttempts = 10
 offset_right = 78.0
 offset_bottom = 26.0
 text = "00:00.000"
-script = ExtResource("6_5gc23")
+script = ExtResource("6_74c5o")
 
 [node name="ColorRect" type="ColorRect" parent="GlobalUi/TimerLabel"]
 z_index = -1

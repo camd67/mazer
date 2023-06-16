@@ -7,8 +7,8 @@ public partial class Maze : TileMap
     [Signal]
     public delegate void MazeGeneratedEventHandler(Vector2I startingLocation, Vector2I exitLocation);
 
-    [Export]
-    private int deadEndsToTrim;
+    // [Export] - Un-exported since this breaks when != -1
+    private int deadEndsToTrim = -1;
 
     [Export]
     private Vector2I mapSize;

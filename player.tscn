@@ -1,7 +1,44 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqcy5qsyh44yc"]
+[gd_scene load_steps=9 format=3 uid="uid://dqcy5qsyh44yc"]
 
-[ext_resource type="Script" path="res://Player.cs" id="1_dbfpq"]
-[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="2_mcsai"]
+[ext_resource type="Script" path="res://Player.cs" id="1_gs4b4"]
+[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="2_7v5rp"]
+
+[sub_resource type="Animation" id="Animation_n13au"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(4, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_55pqe"]
+resource_name = "bounce_move"
+length = 0.3
+loop_mode = 1
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(8, -0.25, 0, 0.25, 0, 4, -0.25, 3, 0.25, 3, 8, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.15, 0.3)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rbal0"]
+_data = {
+"RESET": SubResource("Animation_n13au"),
+"bounce_move": SubResource("Animation_55pqe")
+}
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4g5of"]
 radius = 6.0
@@ -18,12 +55,17 @@ fill_from = Vector2(0.5, 0.5)
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 6
 motion_mode = 1
-script = ExtResource("1_dbfpq")
+script = ExtResource("1_gs4b4")
 speed = 150.0
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_rbal0")
+}
+
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_mcsai")
-centered = false
+position = Vector2(8, 4)
+texture = ExtResource("2_7v5rp")
 region_enabled = true
 region_rect = Rect2(0, 112, 16, 16)
 
@@ -37,8 +79,9 @@ zoom = Vector2(3, 3)
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(8, 11)
+color = Color(0.996078, 0.796078, 0.623529, 1)
 range_item_cull_mask = 3
 shadow_enabled = true
 shadow_item_cull_mask = 2
 texture = SubResource("GradientTexture2D_ooh1y")
-texture_scale = 2.0
+texture_scale = 3.0
