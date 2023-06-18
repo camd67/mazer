@@ -16,16 +16,32 @@ public partial class LevelManager : Node2D
     [Export]
     private PackedScene exitScene;
 
+    [Export]
+    private Color screenDarkColor = new(0, 0, 0);
+
+    [Export]
+    private Color screenLighterColor = new(.5f, .5f, .5f);
+
     private Maze maze;
     private TimerLabel timerLabel;
+    private Control levelComplete;
+    private CanvasModulate screenDarkener;
 
     public override void _Ready()
     {
+        screenDarkener = GetNode<CanvasModulate>("ScreenDarkener");
         timerLabel = GetNode<TimerLabel>("GlobalUi/TimerLabel");
+        levelComplete = GetNode<Control>("GlobalUi/LevelComplete");
+        levelComplete.Connect("level_restart", Callable.From(HandleLevelRestart));
 
         maze = GetNode<Maze>("Maze");
         maze.MazeGenerated += HandleMazeGenerated;
 
+        maze.GenerateMaze();
+    }
+
+    private void HandleLevelRestart()
+    {
         maze.GenerateMaze();
     }
 
@@ -44,12 +60,18 @@ public partial class LevelManager : Node2D
             if (body == player)
             {
                 timerLabel.Stop();
-                GD.Print("You won!");
+                levelComplete.Visible = true;
+                levelComplete.Call("update_results_time", timerLabel.CurrentMillis());
+                timerLabel.Visible = false;
+                screenDarkener.Color = screenLighterColor;
                 exit.QueueFree();
                 player.QueueFree();
             }
         };
 
+        screenDarkener.Color = screenDarkColor;
+        timerLabel.Visible = true;
+        levelComplete.Visible = false;
         timerLabel.Start();
     }
 }

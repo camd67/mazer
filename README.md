@@ -2,4 +2,4 @@
 Explore randomyl generated dungeons and race to the finish!
 
 # Acknowledgements
-- [tilesheet](https://www.kenney.nl/assets/tiny-dungeon)
+- [tilesheet: Kenney.nl](https://www.kenney.nl/assets/tiny-dungeon)

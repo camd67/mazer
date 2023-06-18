@@ -9,7 +9,7 @@ public partial class TimerLabel : Label
 
     public override void _Process(double delta)
     {
-        Text = timer.Elapsed.ToString("mm\\:ss\\:fff");
+        Text = Time.GetTimeStringFromUnixTime(timer.ElapsedMilliseconds);
     }
 
     public void Start()
@@ -20,5 +20,10 @@ public partial class TimerLabel : Label
     public void Stop()
     {
         timer.Stop();
+    }
+
+    public long CurrentMillis()
+    {
+        return timer.ElapsedMilliseconds;
     }
 }

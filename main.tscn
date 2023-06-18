@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b6d3pgllrkbfx"]
+[gd_scene load_steps=8 format=3 uid="uid://b6d3pgllrkbfx"]
 
 [ext_resource type="Script" path="res://LevelManager.cs" id="1_unn20"]
 [ext_resource type="PackedScene" uid="uid://dqcy5qsyh44yc" path="res://player.tscn" id="2_4s1ln"]
@@ -6,6 +6,7 @@
 [ext_resource type="TileSet" uid="uid://biqfnjlpwjs43" path="res://DefaultTileSet.tres" id="4_xavsp"]
 [ext_resource type="Script" path="res://Maze.cs" id="5_wd7qv"]
 [ext_resource type="Script" path="res://TimerLabel.cs" id="6_74c5o"]
+[ext_resource type="Script" path="res://LevelComplete.gd" id="7_puojk"]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
@@ -26,10 +27,10 @@ layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array()
 script = ExtResource("5_wd7qv")
-mapSize = Vector2i(50, 20)
+mapSize = Vector2i(50, 10)
 maxRoomSize = Vector2i(10, 8)
 minRoomSize = Vector2i(2, 2)
-outerWallPaddingThickness = 5
+outerWallPaddingThickness = 10
 roomGenerationAttempts = 100
 
 [node name="GlobalUi" type="CanvasLayer" parent="."]
@@ -50,5 +51,47 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[node name="LevelComplete" type="Control" parent="GlobalUi"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_puojk")
+
+[node name="CenterContainer" type="CenterContainer" parent="GlobalUi/LevelComplete"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GlobalUi/LevelComplete/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="ResultsLbl" type="Label" parent="GlobalUi/LevelComplete/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Your time was: 00:00.000"
+
+[node name="PlayAgainBtn" type="Button" parent="GlobalUi/LevelComplete/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Play again?"
+
+[node name="MainMenuBtn" type="Button" parent="GlobalUi/LevelComplete/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Return to Main Menu"
+
+[node name="QuitBtn" type="Button" parent="GlobalUi/LevelComplete/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
 [node name="ScreenDarkener" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
+
+[connection signal="pressed" from="GlobalUi/LevelComplete/CenterContainer/VBoxContainer/PlayAgainBtn" to="GlobalUi/LevelComplete" method="_on_play_again_btn_pressed"]
+[connection signal="pressed" from="GlobalUi/LevelComplete/CenterContainer/VBoxContainer/MainMenuBtn" to="GlobalUi/LevelComplete" method="_on_main_menu_btn_pressed"]
+[connection signal="pressed" from="GlobalUi/LevelComplete/CenterContainer/VBoxContainer/QuitBtn" to="GlobalUi/LevelComplete" method="_on_quit_btn_pressed"]
