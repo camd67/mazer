@@ -11,9 +11,20 @@ config_version=5
 [application]
 
 config/name="mazer"
-run/main_scene="res://main.tscn"
+run/main_scene="res://main_menu.tscn"
 config/features=PackedStringArray("4.1", "C#", "GL Compatibility")
+boot_splash/use_filter=false
 config/icon="res://icon.svg"
+
+[autoload]
+
+PlayerState="*res://PlayerState.cs"
+
+[display]
+
+window/size/viewport_width=800
+window/size/viewport_height=450
+window/stretch/mode="viewport"
 
 [dotnet]
 

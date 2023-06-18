@@ -8,11 +8,15 @@ public partial class Player : CharacterBody2D
     private float speed = 300;
 
     private AnimationPlayer animationPlayer;
+    private PlayerState playerState;
 
     public override void _Ready()
     {
+        playerState = GetNode<PlayerState>("/root/PlayerState");
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         animationPlayer.AssignedAnimation = "bounce_move";
+        var sprite = GetNode<Sprite2D>("Sprite");
+        sprite.RegionRect = new Rect2(playerState.playerAtlas, sprite.RegionRect.Size);
     }
 
     public override void _Process(double delta)

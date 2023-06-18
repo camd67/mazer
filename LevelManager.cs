@@ -4,6 +4,12 @@ namespace mazer;
 
 public partial class LevelManager : Node2D
 {
+    [Signal]
+    public delegate void PlayLevelEventHandler();
+
+    [Signal]
+    public delegate void StartPlayerSelectionEventHandler();
+
     [Export]
     private PackedScene playerScene;
 

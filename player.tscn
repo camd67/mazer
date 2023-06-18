@@ -53,6 +53,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [node name="Player" type="CharacterBody2D"]
+texture_filter = 1
 collision_mask = 6
 motion_mode = 1
 script = ExtResource("1_gs4b4")
@@ -75,7 +76,7 @@ shape = SubResource("CircleShape2D_4g5of")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Camera" type="Camera2D" parent="."]
-zoom = Vector2(3, 3)
+zoom = Vector2(2, 2)
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(8, 11)
