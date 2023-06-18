@@ -1,4 +1,5 @@
 # Mazer
+Explore randomyl generated dungeons and race to the finish!
 
-# Assets thanks to
+# Acknowledgements
 - [tilesheet](https://www.kenney.nl/assets/tiny-dungeon)
