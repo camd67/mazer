@@ -11,7 +11,7 @@ public partial class Maze : TileMap
     private int deadEndsToTrim = -1;
 
     [Export]
-    private Vector2I mapSize;
+    public Vector2I mapSize;
 
     [Export]
     private Vector2I maxRoomSize;
@@ -24,6 +24,9 @@ public partial class Maze : TileMap
 
     [Export]
     private int roomGenerationAttempts;
+
+    [Export]
+    public float minPlayerSpawnDistance;
 
     private PatternManager patternManager;
 
@@ -51,10 +54,25 @@ public partial class Maze : TileMap
         DrawOuterPaddingWalls(width, height);
         CleanupRooms(mazeGenerator);
 
-        // Choose a random starting location, which needs to be on the perimeter of the maze
+        var exitLocation = mazeGenerator.GenerateRandomRoomLocation();
+
         var startingLocation = mazeGenerator.GenerateRandomRoomLocation();
 
-        var exitLocation = mazeGenerator.GenerateRandomRoomLocation();
+        var generationAttempts = 10_000;
+        while (LocationToGlobal(exitLocation).DistanceTo(LocationToGlobal(startingLocation)) <
+               minPlayerSpawnDistance
+               && generationAttempts > 0)
+        {
+            startingLocation = mazeGenerator.GenerateRandomRoomLocation();
+            generationAttempts--;
+        }
+
+        GD.Print("Generation attempts: " + (10_000 - generationAttempts));
+        if (generationAttempts <= 0)
+        {
+            GD.PushWarning("Player location generation failed due to too many attempts. Using last tried location. " +
+                           "This may result in players too close to the exit.");
+        }
 
         EmitSignal(SignalName.MazeGenerated, startingLocation, exitLocation);
     }

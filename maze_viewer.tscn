@@ -10,14 +10,15 @@ texture_filter = 1
 script = ExtResource("1_6xp1w")
 
 [node name="Maze" type="TileMap" parent="."]
+z_index = -1
 tile_set = ExtResource("2_2xnkl")
 format = 2
 script = ExtResource("3_6neno")
 mapSize = Vector2i(50, 20)
 maxRoomSize = Vector2i(10, 8)
 minRoomSize = Vector2i(2, 2)
-outerWallPaddingThickness = 2
 roomGenerationAttempts = 200
+minPlayerSpawnDistance = 500.0
 
 [node name="Player" type="Sprite2D" parent="."]
 texture = ExtResource("4_wy5mk")
@@ -31,3 +32,6 @@ texture = ExtResource("4_wy5mk")
 centered = false
 region_enabled = true
 region_rect = Rect2(80, 112, 16, 16)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.2, 0.2)

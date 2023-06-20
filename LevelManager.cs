@@ -71,7 +71,6 @@ public partial class LevelManager : Node2D
 
         var exit = exitScene.Instantiate<Area2D>();
         AddChild(exit);
-        // TODO: What if this is the player position?
         exit.GlobalPosition = maze.LocationToGlobal(exitLocation);
         exit.BodyEntered += body =>
         {
@@ -91,6 +90,7 @@ public partial class LevelManager : Node2D
         timerLabel.Visible = true;
         levelComplete.Visible = false;
         timerLabel.Start();
+        GD.Print("Maze generated with starting location " + player.GlobalPosition + " and exit " + exit.GlobalPosition + " with distance " + player.GlobalPosition.DistanceTo(exit.GlobalPosition));
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)
