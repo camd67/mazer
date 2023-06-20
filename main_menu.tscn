@@ -62,8 +62,7 @@ focus_neighbor_top = NodePath("../PlayBtn")
 focus_neighbor_bottom = NodePath("../PlayBtn")
 focus_next = NodePath("../PlayBtn")
 focus_previous = NodePath("../PlayBtn")
-text = "Quit
-"
+text = "Quit to Desktop"
 
 [connection signal="pressed" from="AspectRatioContainer/VBoxContainer/PlayBtn" to="." method="_on_play_btn_pressed"]
 [connection signal="pressed" from="AspectRatioContainer/VBoxContainer/QuitBtn" to="." method="_on_quit_btn_pressed"]

@@ -30,6 +30,12 @@ public partial class Player : CharacterBody2D
 
         var direction = Input.GetVector("player_left", "player_right", "player_up", "player_down");
 
+        if (playerState.mode == PlayerState.PlayerMode.Paused)
+        {
+            // If we're "paused" just prevent like no buttons were pressed
+            direction = Vector2.Zero;
+        }
+
         if (direction != Vector2.Zero)
         {
             velocity = speed * direction;

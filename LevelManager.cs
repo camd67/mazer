@@ -26,18 +26,36 @@ public partial class LevelManager : Node2D
     private TimerLabel timerLabel;
     private Control levelComplete;
     private CanvasModulate screenDarkener;
+    private Control pauseScreen;
+    private PlayerState playerState;
 
     public override void _Ready()
     {
+        playerState = GetNode<PlayerState>("/root/PlayerState");
+        playerState.mode = PlayerState.PlayerMode.Playing;
+
+        pauseScreen = GetNode<Control>("GlobalUi/PauseScreen");
+        pauseScreen.Connect("pause_menu_closed", Callable.From(HandlePauseMenuClosed));
+        pauseScreen.Visible = false;
+
         screenDarkener = GetNode<CanvasModulate>("ScreenDarkener");
+        screenDarkener.Visible = true;
+
         timerLabel = GetNode<TimerLabel>("GlobalUi/TimerLabel");
+
         levelComplete = GetNode<Control>("GlobalUi/LevelComplete");
         levelComplete.Connect("level_restart", Callable.From(HandleLevelRestart));
+        levelComplete.Visible = false;
 
         maze = GetNode<Maze>("Maze");
         maze.MazeGenerated += HandleMazeGenerated;
-
         maze.GenerateMaze();
+    }
+
+    private void HandlePauseMenuClosed()
+    {
+        playerState.mode = PlayerState.PlayerMode.Playing;
+        pauseScreen.Visible = false;
     }
 
     private void HandleLevelRestart()
@@ -73,5 +91,22 @@ public partial class LevelManager : Node2D
         timerLabel.Visible = true;
         levelComplete.Visible = false;
         timerLabel.Start();
+    }
+
+    public override void _UnhandledKeyInput(InputEvent @event)
+    {
+        // Only pause when the level isn't complete
+        if (!levelComplete.Visible && @event.IsActionPressed("pause"))
+        {
+            if (playerState.mode == PlayerState.PlayerMode.Playing)
+            {
+                playerState.mode = PlayerState.PlayerMode.Paused;
+                pauseScreen.Visible = true;
+            }
+            else
+            {
+                HandlePauseMenuClosed();
+            }
+        }
     }
 }

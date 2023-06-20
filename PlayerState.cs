@@ -7,11 +7,18 @@ namespace mazer;
 /// </summary>
 public partial class PlayerState : Node
 {
+    public enum PlayerMode
+    {
+        Paused = 0,
+        Playing = 1,
+    }
+
     public Vector2I playerAtlas;
+
+    public PlayerMode mode = PlayerMode.Playing;
 
     public override void _Ready()
     {
-        GD.Print("PlayerState init");
     }
 
     public override void _Process(double delta)
