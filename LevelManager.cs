@@ -83,7 +83,7 @@ public partial class LevelManager : Node2D
             {
                 timerLabel.Stop();
                 levelComplete.Visible = true;
-                levelComplete.Call("update_results_time", timerLabel.CurrentMillis());
+                levelComplete.Call("update_results_time", timerLabel.DurationText());
                 timerLabel.Visible = false;
                 screenDarkener.Color = screenLighterColor;
                 exit.QueueFree();

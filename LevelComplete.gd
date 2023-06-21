@@ -5,8 +5,8 @@ extends Control
 
 signal level_restart()
 
-func update_results_time(time):
-	results_lbl.text = "Your time was: " + Time.get_time_string_from_unix_time(time)
+func update_results_time(timeText):
+	results_lbl.text = "Your time was: " + timeText
 
 func _on_play_again_btn_pressed():
 	level_restart.emit()
