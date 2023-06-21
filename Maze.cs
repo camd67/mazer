@@ -29,6 +29,7 @@ public partial class Maze : TileMap
     public float minPlayerSpawnDistance;
 
     private PatternManager patternManager;
+    private AStar2D pathfinder;
 
     public override void _Ready()
     {
@@ -67,14 +68,66 @@ public partial class Maze : TileMap
             generationAttempts--;
         }
 
-        GD.Print("Generation attempts: " + (10_000 - generationAttempts));
         if (generationAttempts <= 0)
         {
             GD.PushWarning("Player location generation failed due to too many attempts. Using last tried location. " +
                            "This may result in players too close to the exit.");
         }
 
+        InitPathfinder(maze);
+
         EmitSignal(SignalName.MazeGenerated, startingLocation, exitLocation);
+    }
+
+    private void InitPathfinder(Wall[,] walls)
+    {
+        pathfinder = new AStar2D();
+        // Can't reserve since we don't actually know the number of open spaces and we'd be reserving too much
+        // pathfinder.ReserveSpace(mapSize.X * mapSize.Y);
+        for (var x = 0; x < mapSize.X; x++)
+        {
+            for (var y = 0; y < mapSize.Y; y++)
+            {
+                if (walls[x, y].HasOpening())
+                {
+                    pathfinder.AddPoint(PointToPathId(new Vector2I(x,y)), new Vector2(x,y));
+                }
+            }
+        }
+        for (var x = 0; x < mapSize.X; x++)
+        {
+            for (var y = 0; y < mapSize.Y; y++)
+            {
+                var wall = walls[x, y];
+                var thisPoint = new Vector2I(x, y);
+                var thisId = PointToPathId(thisPoint);
+
+                if (!wall.Has(Wall.Up))
+                {
+                    var otherPoint = thisPoint + Vector2I.Up;
+                    var otherId = PointToPathId(otherPoint);
+                    pathfinder.ConnectPoints(thisId, otherId);
+                }
+                if (!wall.Has(Wall.Right))
+                {
+                    var otherPoint = thisPoint + Vector2I.Right;
+                    var otherId = PointToPathId(otherPoint);
+                    pathfinder.ConnectPoints(thisId, otherId);
+                }
+                if (!wall.Has(Wall.Down))
+                {
+                    var otherPoint = thisPoint + Vector2I.Down;
+                    var otherId = PointToPathId(otherPoint);
+                    pathfinder.ConnectPoints(thisId, otherId);
+                }
+                if (!wall.Has(Wall.Left))
+                {
+                    var otherPoint = thisPoint + Vector2I.Left;
+                    var otherId = PointToPathId(otherPoint);
+                    pathfinder.ConnectPoints(thisId, otherId);
+                }
+            }
+        }
     }
 
     private void CleanupRooms(MazeGenerator mazeGenerator)
@@ -141,6 +194,34 @@ public partial class Maze : TileMap
         return maze.IsInBounds(x, y) ? maze[x, y] : Wall.All;
     }
 
+    /// <summary>
+    /// Draws a directed path on the maze on the second layer
+    /// </summary>
+    public void DrawDirectedPath(Vector2[] points)
+    {
+        var lastDirection = Vector2I.Zero;
+        for (var i = 0; i < points.Length; i++)
+        {
+            // Convert from our vector2 into vector2i for easier manipulation
+            var point = VectorUtil.ToI(points[i]);
+
+            // Figure out the direction we're moving in (if we're not on the last point)
+            // that last point will just continue the last direction
+            var pathSides = lastDirection == Vector2I.Zero ? Wall.None : WallExtensions.DirectionToWall[lastDirection].Invert();
+            if (i < points.Length - 1)
+            {
+                lastDirection = VectorUtil.ToI(points[i + 1]) - point;
+            }
+            else
+            {
+                lastDirection = Vector2I.Zero;
+            }
+            pathSides = pathSides.With(lastDirection == Vector2I.Zero ? Wall.None : WallExtensions.DirectionToWall[lastDirection]);
+
+            patternManager.DrawPath(point, pathSides, this);
+        }
+    }
+
     public Vector2 LocationToGlobal(Vector2I location)
     {
         var topLeftOffsetVector = TileSet.TileSize * patternManager.patternSize;
@@ -148,5 +229,21 @@ public partial class Maze : TileMap
         var global = location * topLeftOffsetVector + halfOffsetVector;
         // The center of the cell is always a safe play to place something
         return global;
+    }
+
+    public Vector2I LocationToIndex(Vector2 location)
+    {
+        var blockSize = TileSet.TileSize * patternManager.patternSize;
+        return VectorUtil.ToI(location / blockSize);
+    }
+
+    private long PointToPathId(Vector2I pos)
+    {
+        return pos.X + pos.Y * mapSize.X;
+    }
+
+    public Vector2[] ComputePath(Vector2I from, Vector2I to)
+    {
+        return pathfinder.GetPointPath(PointToPathId(from), PointToPathId(to));
     }
 }

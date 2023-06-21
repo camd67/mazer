@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Godot;
 
 namespace mazer;
 
@@ -57,6 +58,30 @@ public static class WallExtensions
         { Wall.Down, "╩" },
         { Wall.Up, "╦" },
     };
+
+    public static readonly IReadOnlyDictionary<Vector2I, Wall> DirectionToWall = new Dictionary<Vector2I, Wall>
+    {
+        { Vector2I.Up, Wall.Up },
+        { Vector2I.Right, Wall.Right },
+        { Vector2I.Down, Wall.Down },
+        { Vector2I.Left, Wall.Left },
+    };
+
+    public static readonly IReadOnlyDictionary<Wall, Vector2I> WallToDirection = new Dictionary<Wall, Vector2I>
+    {
+        { Wall.Up, Vector2I.Up },
+        { Wall.Right, Vector2I.Right },
+        { Wall.Down, Vector2I.Down },
+        { Wall.Left, Vector2I.Left },
+    };
+
+    public static bool HasOpening(this Wall wall)
+    {
+        return !wall.Has(Wall.Up)
+               || !wall.Has(Wall.Down)
+               || !wall.Has(Wall.Right)
+               || !wall.Has(Wall.Left);
+    }
 
     public static bool Has(this Wall wall, Wall mask)
     {

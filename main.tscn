@@ -28,11 +28,11 @@ layer_1/y_sort_origin = 0
 layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array()
 script = ExtResource("5_wd7qv")
-mapSize = Vector2i(50, 20)
-maxRoomSize = Vector2i(10, 8)
-minRoomSize = Vector2i(2, 2)
+mapSize = Vector2i(10, 10)
+maxRoomSize = Vector2i(3, 3)
+minRoomSize = Vector2i(3, 3)
 outerWallPaddingThickness = 10
-roomGenerationAttempts = 100
+roomGenerationAttempts = 5
 minPlayerSpawnDistance = 500.0
 
 [node name="GlobalUi" type="CanvasLayer" parent="."]

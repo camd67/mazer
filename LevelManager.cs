@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Godot;
 
 namespace mazer;
@@ -28,6 +30,8 @@ public partial class LevelManager : Node2D
     private CanvasModulate screenDarkener;
     private Control pauseScreen;
     private PlayerState playerState;
+    private Player player;
+    private Area2D exit;
 
     public override void _Ready()
     {
@@ -65,11 +69,12 @@ public partial class LevelManager : Node2D
 
     private void HandleMazeGenerated(Vector2I startingLocation, Vector2I exitLocation)
     {
-        var player = playerScene.Instantiate<Player>();
+        player = playerScene.Instantiate<Player>();
         AddChild(player);
         player.GlobalPosition = maze.LocationToGlobal(startingLocation);
+        player.PlayerAbility += HandlePlayerAbility;
 
-        var exit = exitScene.Instantiate<Area2D>();
+        exit = exitScene.Instantiate<Area2D>();
         AddChild(exit);
         exit.GlobalPosition = maze.LocationToGlobal(exitLocation);
         exit.BodyEntered += body =>
@@ -90,7 +95,14 @@ public partial class LevelManager : Node2D
         timerLabel.Visible = true;
         levelComplete.Visible = false;
         timerLabel.Start();
-        GD.Print("Maze generated with starting location " + player.GlobalPosition + " and exit " + exit.GlobalPosition + " with distance " + player.GlobalPosition.DistanceTo(exit.GlobalPosition));
+    }
+
+    private void HandlePlayerAbility(Vector2 location, int distance)
+    {
+        var playerLocationIndex = maze.LocationToIndex(location);
+        var exitLocationIndex = maze.LocationToIndex(exit.GlobalPosition);
+        var path = maze.ComputePath(playerLocationIndex, exitLocationIndex);
+        maze.DrawDirectedPath(path.Take(distance).ToArray());
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)

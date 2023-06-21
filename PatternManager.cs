@@ -13,6 +13,13 @@ namespace mazer;
 /// </summary>
 public partial class PatternManager : TileMap
 {
+    private Vector2I pathLeftRight = new(5, 10);
+    private Vector2I pathUpDown = new(6, 10);
+    private Vector2I pathUpLeft = new(7, 10);
+    private Vector2I pathUpRight = new(8, 10);
+    private Vector2I pathDownRight = new(9, 10);
+    private Vector2I pathDownLeft = new(10, 10);
+
     [Export]
     public Vector2I patternSize;
 
@@ -164,13 +171,13 @@ public partial class PatternManager : TileMap
             for (var y = 0; y < patternSize.Y; y++)
             {
                 var topLeft = removeTopLeft && x < leftVertConnectionSize
-                                             && y < upperHorizConnectionSize;
+                                            && y < upperHorizConnectionSize;
                 var topRight = removeTopRight && x > patternSize.X - rightVertConnectionSize - 1
-                                               && y < upperHorizConnectionSize;
+                                              && y < upperHorizConnectionSize;
                 var bottomRight = removeBottomRight && x > patternSize.X - rightVertConnectionSize - 1
-                                                     && y > patternSize.Y - bottomHorizConnectionSize - 1;
+                                                    && y > patternSize.Y - bottomHorizConnectionSize - 1;
                 var bottomLeft = removeBottomLeft && x < leftVertConnectionSize
-                                                   && y > patternSize.Y - bottomHorizConnectionSize - 1;
+                                                  && y > patternSize.Y - bottomHorizConnectionSize - 1;
 
                 // We're not in a corner we want to remove, skip
                 if (!topLeft && !topRight && !bottomRight && !bottomLeft)
@@ -229,5 +236,61 @@ public partial class PatternManager : TileMap
         }
 
         return atlasList;
+    }
+
+    public void DrawPath(Vector2I point, Wall pathSides, TileMap otherTileMap)
+    {
+        // there's probably a better way to do this...
+        var baseOffset = point * patternSize;
+
+        // First draw the outer edges
+        if (pathSides.Has(Wall.Up))
+        {
+            otherTileMap.SetCell(1, baseOffset + new Vector2I(1, 0), 1, pathUpDown);
+            otherTileMap.SetCell(1, baseOffset + new Vector2I(1, 1), 1, pathUpDown);
+        }
+
+        if (pathSides.Has(Wall.Right))
+        {
+            otherTileMap.SetCell(1, baseOffset + new Vector2I(2, 2), 1, pathLeftRight);
+        }
+
+        if (pathSides.Has(Wall.Down))
+        {
+            otherTileMap.SetCell(1, baseOffset + new Vector2I(1, 3), 1, pathUpDown);
+        }
+
+        if (pathSides.Has(Wall.Left))
+        {
+            otherTileMap.SetCell(1, baseOffset + new Vector2I(0, 2), 1, pathLeftRight);
+        }
+
+        // Then draw the center
+        var center = baseOffset + new Vector2I(1, 2);
+
+        if (pathSides.Has(Wall.Left.With(Wall.Up)))
+        {
+            otherTileMap.SetCell(1, center, 1, pathUpLeft);
+        }
+        else if (pathSides.Has(Wall.Right.With(Wall.Up)))
+        {
+            otherTileMap.SetCell(1, center, 1, pathUpRight);
+        }
+        else if (pathSides.Has(Wall.Left.With(Wall.Down)))
+        {
+            otherTileMap.SetCell(1, center, 1, pathDownLeft);
+        }
+        else if (pathSides.Has(Wall.Right.With(Wall.Down)))
+        {
+            otherTileMap.SetCell(1, center, 1, pathDownRight);
+        }
+        else if (pathSides.Has(Wall.Up.With(Wall.Down)))
+        {
+            otherTileMap.SetCell(1, center, 1, pathUpDown);
+        }
+        else if (pathSides.Has(Wall.Right.With(Wall.Left)))
+        {
+            otherTileMap.SetCell(1, center, 1, pathLeftRight);
+        }
     }
 }

@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://PatternManager.cs" id="2_yioyo"]
 
 [node name="PatternManager" type="TileMap"]
+texture_filter = 1
 tile_set = ExtResource("1_1huvv")
 format = 2
 layer_0/name = "Base"

@@ -25,6 +25,8 @@ public partial class MazeViewer : Node2D
     {
         GetNode<Sprite2D>("Player").GlobalPosition = maze.LocationToGlobal(startingLocation);
         GetNode<Sprite2D>("Exit").GlobalPosition = maze.LocationToGlobal(exitLocation);
+        var path = maze.ComputePath(startingLocation, exitLocation);
+        maze.DrawDirectedPath(path);
         QueueRedraw();
     }
 

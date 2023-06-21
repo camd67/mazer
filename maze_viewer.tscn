@@ -13,12 +13,19 @@ script = ExtResource("1_6xp1w")
 z_index = -1
 tile_set = ExtResource("2_2xnkl")
 format = 2
+layer_1/name = ""
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 0
+layer_1/tile_data = PackedInt32Array()
 script = ExtResource("3_6neno")
-mapSize = Vector2i(50, 20)
+mapSize = Vector2i(20, 10)
 maxRoomSize = Vector2i(10, 8)
-minRoomSize = Vector2i(2, 2)
-roomGenerationAttempts = 200
-minPlayerSpawnDistance = 500.0
+minRoomSize = Vector2i(3, 3)
+roomGenerationAttempts = 100
+minPlayerSpawnDistance = 10.0
 
 [node name="Player" type="Sprite2D" parent="."]
 texture = ExtResource("4_wy5mk")
@@ -34,4 +41,3 @@ region_enabled = true
 region_rect = Rect2(80, 112, 16, 16)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.2, 0.2)

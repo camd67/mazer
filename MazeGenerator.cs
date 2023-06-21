@@ -12,22 +12,6 @@ namespace mazer;
 /// </summary>
 public class MazeGenerator
 {
-    private static readonly IReadOnlyDictionary<Vector2I, Wall> DirectionToWall = new Dictionary<Vector2I, Wall>
-    {
-        { Vector2I.Up, Wall.Up },
-        { Vector2I.Right, Wall.Right },
-        { Vector2I.Down, Wall.Down },
-        { Vector2I.Left, Wall.Left },
-    };
-
-    private static readonly IReadOnlyDictionary<Wall, Vector2I> WallToDirection = new Dictionary<Wall, Vector2I>
-    {
-        { Wall.Up, Vector2I.Up },
-        { Wall.Right, Vector2I.Right },
-        { Wall.Down, Vector2I.Down },
-        { Wall.Left, Vector2I.Left },
-    };
-
     /// <summary>
     ///     The bounds of the maze.
     ///     We should not generate any tiles beyond these edges.
@@ -167,7 +151,7 @@ public class MazeGenerator
                 {
                     if (cell.Has(dir))
                     {
-                        var otherCell = location + WallToDirection[dir];
+                        var otherCell = location + WallExtensions.WallToDirection[dir];
 
                         if (IsInBounds(otherCell) && regionsByPos[otherCell] != thisRegion)
                         {
@@ -204,7 +188,7 @@ public class MazeGenerator
             // Knock down a wall to another region that has a valid joint
             var wallsForThisJoint = wallsForJoint[joint].ToList();
             var wall = RngUtil.Pick(wallsForThisJoint);
-            var otherSide = WallToDirection[wall] + joint;
+            var otherSide = WallExtensions.WallToDirection[wall] + joint;
             var otherRegion = regionsByPos[otherSide];
             wallsForThisJoint.Remove(wall);
 
@@ -218,7 +202,7 @@ public class MazeGenerator
 
                 wall = RngUtil.Pick(wallsForThisJoint);
                 wallsForThisJoint.Remove(wall);
-                otherSide = WallToDirection[wall] + joint;
+                otherSide = WallExtensions.WallToDirection[wall] + joint;
                 otherRegion = regionsByPos[otherSide];
             }
 
@@ -393,7 +377,7 @@ public class MazeGenerator
                 var chosenDirection = candidateDirections[GD.RandRange(0, candidateDirections.Count - 1)];
                 var nextCell = currentCell + chosenDirection;
                 // Remove the wall in this current cell, and the next cell
-                var chosenWall = DirectionToWall[chosenDirection];
+                var chosenWall = WallExtensions.DirectionToWall[chosenDirection];
                 // Clear the wall in our current direction and the next cell in the opposite direction
                 maze[currentCell.X, currentCell.Y] = maze[currentCell.X, currentCell.Y].Without(chosenWall);
                 maze[nextCell.X, nextCell.Y] = maze[nextCell.X, nextCell.Y].Without(chosenWall.Invert());

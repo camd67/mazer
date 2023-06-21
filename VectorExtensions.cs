@@ -25,4 +25,12 @@ public static class VectorUtil
             GD.RandRange(0, bounds.Y)
         );
     }
+
+    public static Vector2I ToI(Vector2 pos)
+    {
+        return new Vector2I(
+            (int)pos.X,
+            (int)pos.Y
+        );
+    }
 }
