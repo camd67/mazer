@@ -23,8 +23,8 @@ layer_1/tile_data = PackedInt32Array()
 script = ExtResource("3_6neno")
 mapSize = Vector2i(50, 20)
 maxRoomSize = Vector2i(10, 8)
-minRoomSize = Vector2i(3, 3)
-roomGenerationAttempts = 100
+minRoomSize = Vector2i(2, 2)
+roomGenerationAttempts = 200
 minPlayerSpawnDistance = 350.0
 
 [node name="Player" type="Sprite2D" parent="."]
