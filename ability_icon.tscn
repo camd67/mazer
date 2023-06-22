@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdmbfp65n0emf"]
+
+[ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="1_2xphw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h04br"]
+atlas = ExtResource("1_2xphw")
+region = Rect2(96, 128, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jq0ml"]
+atlas = ExtResource("1_2xphw")
+region = Rect2(80, 128, 16, 16)
+
+[node name="AbilityIcon" type="TextureProgressBar"]
+texture_filter = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -48.0
+offset_bottom = 48.0
+grow_horizontal = 0
+value = 80.0
+rounded = true
+fill_mode = 3
+nine_patch_stretch = true
+texture_over = SubResource("AtlasTexture_h04br")
+texture_progress = SubResource("AtlasTexture_jq0ml")

@@ -1,0 +1,83 @@
+[gd_scene load_steps=3 format=3 uid="uid://dn16jg8lk148q"]
+
+[ext_resource type="Script" path="res://credits.gd" id="1_ss03p"]
+[ext_resource type="Texture2D" uid="uid://clrel65qmj5tt" path="res://mainMenuBackdrop.png" id="2_tw2ix"]
+
+[node name="Credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ss03p")
+
+[node name="Backdrop" type="TextureRect" parent="."]
+self_modulate = Color(0.192157, 0.192157, 0.192157, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -195.0
+offset_top = -89.0
+offset_right = 1420.0
+offset_bottom = 1095.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_tw2ix")
+stretch_mode = 2
+
+[node name="BackToMenuBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 8.0
+offset_right = 81.0
+offset_bottom = 52.0
+text = "Back"
+
+[node name="ShowLicensesBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 391.0
+offset_right = 87.0
+offset_bottom = 435.0
+text = "Licenses"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 92.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CreditsContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CreditsHeader" type="Label" parent="ScrollContainer/CreditsContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Header"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CreditsLbl" type="Label" parent="ScrollContainer/CreditsContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "Credits"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="LicenseLbl" type="Label" parent="ScrollContainer/CreditsContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "License"
+autowrap_mode = 3
+
+[connection signal="pressed" from="BackToMenuBtn" to="." method="_on_back_to_menu_btn_pressed"]
+[connection signal="pressed" from="ShowLicensesBtn" to="." method="_on_show_licenses_btn_pressed"]

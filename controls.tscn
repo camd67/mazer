@@ -1,0 +1,234 @@
+[gd_scene load_steps=15 format=3 uid="uid://5oopit24qeo4"]
+
+[ext_resource type="Texture2D" uid="uid://clrel65qmj5tt" path="res://mainMenuBackdrop.png" id="1_5gedi"]
+[ext_resource type="Script" path="res://controls.gd" id="1_5oar6"]
+[ext_resource type="PackedScene" uid="uid://cdmbfp65n0emf" path="res://ability_icon.tscn" id="2_8rag4"]
+[ext_resource type="Texture2D" uid="uid://di21qxtgf641m" path="res://controlTextures/Space_Key_Light.png" id="3_qyjal"]
+[ext_resource type="Texture2D" uid="uid://dy0ckimoh56t0" path="res://controlTextures/Z_Key_Light.png" id="4_x51kt"]
+[ext_resource type="Texture2D" uid="uid://ddjnqgpbfb3gi" path="res://controlTextures/Ctrl_Key_Light.png" id="5_a2bxs"]
+[ext_resource type="Texture2D" uid="uid://bsw21ey3sy7a3" path="res://controlTextures/Arrow_Left_Key_Light.png" id="6_y05o5"]
+[ext_resource type="Texture2D" uid="uid://b116obi3xpb7i" path="res://controlTextures/Arrow_Down_Key_Light.png" id="7_4ulcr"]
+[ext_resource type="Texture2D" uid="uid://bqax10dg0ms4h" path="res://controlTextures/Arrow_Up_Key_Light.png" id="8_dh5wh"]
+[ext_resource type="Texture2D" uid="uid://crdy0bfrp508k" path="res://controlTextures/Arrow_Right_Key_Light.png" id="9_kwxcb"]
+[ext_resource type="Texture2D" uid="uid://bb7k5hnx6ikah" path="res://controlTextures/W_Key_Light.png" id="10_l2uaf"]
+[ext_resource type="Texture2D" uid="uid://c4wdtwrdihoig" path="res://controlTextures/S_Key_Light.png" id="11_pqn6a"]
+[ext_resource type="Texture2D" uid="uid://bc4w23in13pkv" path="res://controlTextures/D_Key_Light.png" id="12_7u780"]
+[ext_resource type="Texture2D" uid="uid://dl8j3f2gj4ksr" path="res://controlTextures/A_Key_Light.png" id="13_qes0y"]
+
+[node name="Controls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5oar6")
+
+[node name="Backdrop" type="TextureRect" parent="."]
+self_modulate = Color(0.192157, 0.192157, 0.192157, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -601.0
+offset_top = -265.0
+offset_right = 1014.0
+offset_bottom = 919.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_5gedi")
+stretch_mode = 2
+
+[node name="Abililty" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 125.0
+offset_top = 247.0
+offset_right = 165.0
+offset_bottom = 287.0
+
+[node name="Icons" type="Control" parent="Abililty"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AbilityIcon" parent="Abililty/Icons" instance=ExtResource("2_8rag4")]
+layout_mode = 1
+offset_left = 376.0
+offset_top = 7.0
+offset_right = 424.0
+offset_bottom = 55.0
+value = 40.0
+texture_over = null
+
+[node name="Label" type="Label" parent="Abililty/Icons"]
+layout_mode = 0
+offset_left = 473.0
+offset_top = 18.0
+offset_right = 589.0
+offset_bottom = 44.0
+text = "Charging..."
+
+[node name="AbilityIcon2" parent="Abililty/Icons" instance=ExtResource("2_8rag4")]
+layout_mode = 1
+offset_left = 376.0
+offset_top = 82.0
+offset_right = 424.0
+offset_bottom = 130.0
+value = 100.0
+
+[node name="Label2" type="Label" parent="Abililty/Icons"]
+layout_mode = 0
+offset_left = 473.0
+offset_top = 93.0
+offset_right = 589.0
+offset_bottom = 119.0
+text = "Ready!"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Abililty"]
+layout_mode = 2
+offset_right = 350.0
+offset_bottom = 151.0
+
+[node name="Abilitylbl" type="Label" parent="Abililty/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Activate Ability"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Abililty/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="SpaceKeyLight" type="TextureRect" parent="Abililty/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_qyjal")
+
+[node name="Label2" type="Label" parent="Abililty/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "or"
+
+[node name="ZKeyLight" type="TextureRect" parent="Abililty/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_x51kt")
+
+[node name="Label3" type="Label" parent="Abililty/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "or"
+
+[node name="CtrlKeyLight" type="TextureRect" parent="Abililty/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_a2bxs")
+
+[node name="Movement" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.1375
+anchor_top = -0.471111
+anchor_right = 0.1375
+anchor_bottom = -0.471111
+offset_left = 97.0
+offset_top = 254.0
+offset_right = 137.0
+offset_bottom = 294.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Movement"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 83.0
+offset_top = -44.0
+offset_right = 250.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "Movement"
+
+[node name="ArrowLeftKeyLight" type="TextureRect" parent="Movement"]
+layout_mode = 2
+offset_left = -79.0
+offset_top = 75.0
+offset_right = 21.0
+offset_bottom = 175.0
+texture = ExtResource("6_y05o5")
+
+[node name="ArrowDownKeyLight" type="TextureRect" parent="Movement"]
+layout_mode = 2
+offset_left = -4.0
+offset_top = 75.0
+offset_right = 96.0
+offset_bottom = 175.0
+texture = ExtResource("7_4ulcr")
+
+[node name="ArrowUpKeyLight" type="TextureRect" parent="Movement"]
+layout_mode = 2
+offset_left = -4.0
+offset_top = 2.0
+offset_right = 96.0
+offset_bottom = 102.0
+texture = ExtResource("8_dh5wh")
+
+[node name="ArrowRightKeyLight" type="TextureRect" parent="Movement"]
+layout_mode = 2
+offset_left = 72.0
+offset_top = 75.0
+offset_right = 172.0
+offset_bottom = 175.0
+texture = ExtResource("9_kwxcb")
+
+[node name="Label4" type="Label" parent="Movement"]
+layout_mode = 2
+offset_left = 172.0
+offset_top = 40.0
+offset_right = 255.0
+offset_bottom = 78.0
+theme_override_font_sizes/font_size = 25
+text = "or"
+
+[node name="WKeyLight" type="TextureRect" parent="Movement"]
+layout_mode = 0
+offset_left = 283.0
+offset_top = 2.0
+offset_right = 383.0
+offset_bottom = 102.0
+texture = ExtResource("10_l2uaf")
+
+[node name="SKeyLight" type="TextureRect" parent="Movement"]
+layout_mode = 0
+offset_left = 283.0
+offset_top = 75.0
+offset_right = 383.0
+offset_bottom = 175.0
+texture = ExtResource("11_pqn6a")
+
+[node name="DKeyLight" type="TextureRect" parent="Movement"]
+layout_mode = 0
+offset_left = 358.0
+offset_top = 75.0
+offset_right = 458.0
+offset_bottom = 175.0
+texture = ExtResource("12_7u780")
+
+[node name="AKeyLight" type="TextureRect" parent="Movement"]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 75.0
+offset_right = 308.0
+offset_bottom = 175.0
+texture = ExtResource("13_qes0y")
+
+[node name="BackToMenuBtn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 17.0
+offset_right = 104.0
+offset_bottom = 68.0
+text = "Back"
+
+[connection signal="pressed" from="BackToMenuBtn" to="." method="_on_back_to_menu_btn_pressed"]

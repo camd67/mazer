@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dqcy5qsyh44yc"]
+[gd_scene load_steps=10 format=3 uid="uid://dqcy5qsyh44yc"]
 
 [ext_resource type="Script" path="res://Player.cs" id="1_gs4b4"]
 [ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="2_7v5rp"]
+[ext_resource type="PackedScene" uid="uid://cdmbfp65n0emf" path="res://ability_icon.tscn" id="3_uu7cp"]
 
 [sub_resource type="Animation" id="Animation_n13au"]
 length = 0.001
@@ -52,14 +53,6 @@ gradient = SubResource("Gradient_v28eo")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_h04br"]
-atlas = ExtResource("2_7v5rp")
-region = Rect2(96, 128, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jq0ml"]
-atlas = ExtResource("2_7v5rp")
-region = Rect2(80, 128, 16, 16)
-
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 1
 collision_mask = 6
@@ -102,17 +95,4 @@ autostart = true
 
 [node name="AbilityUi" type="CanvasLayer" parent="."]
 
-[node name="AbilityIcon" type="TextureProgressBar" parent="AbilityUi"]
-texture_filter = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -48.0
-offset_bottom = 48.0
-grow_horizontal = 0
-value = 80.0
-rounded = true
-fill_mode = 3
-nine_patch_stretch = true
-texture_over = SubResource("AtlasTexture_h04br")
-texture_progress = SubResource("AtlasTexture_jq0ml")
+[node name="AbilityIcon" parent="AbilityUi" instance=ExtResource("3_uu7cp")]
