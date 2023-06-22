@@ -39,6 +39,7 @@ public partial class Maze : TileMap
 
     public void GenerateMaze()
     {
+        Clear();
         var mazeGenerator = new MazeGenerator(
             mapSize,
             deadEndsToTrim,

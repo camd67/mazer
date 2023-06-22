@@ -90,6 +90,7 @@ texture = SubResource("GradientTexture2D_ooh1y")
 texture_scale = 3.0
 
 [node name="AbilityCooldown" type="Timer" parent="."]
+wait_time = 15.0
 one_shot = true
 autostart = true
 
