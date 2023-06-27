@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://dqcy5qsyh44yc"]
+[gd_scene load_steps=11 format=3 uid="uid://dqcy5qsyh44yc"]
 
 [ext_resource type="Script" path="res://Player.cs" id="1_gs4b4"]
+[ext_resource type="AudioStream" uid="uid://cse3tftix4rkh" path="res://footstep_sound_randomizer_stream.tres" id="2_7c6ex"]
 [ext_resource type="Texture2D" uid="uid://4wra6817tyyo" path="res://tilemap_packed.png" id="2_7v5rp"]
 [ext_resource type="PackedScene" uid="uid://cdmbfp65n0emf" path="res://ability_icon.tscn" id="3_uu7cp"]
 
@@ -34,6 +35,21 @@ tracks/0/keys = {
 "points": PackedFloat32Array(8, -0.25, 0, 0.25, 0, 4, -0.25, 3, 0.25, 3, 8, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 0.15, 0.3)
 }
+tracks/1/type = "audio"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FootStepAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("2_7c6ex")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/1/use_blend = true
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rbal0"]
 _data = {
@@ -97,3 +113,10 @@ autostart = true
 [node name="AbilityUi" type="CanvasLayer" parent="."]
 
 [node name="AbilityIcon" parent="AbilityUi" instance=ExtResource("3_uu7cp")]
+
+[node name="FootStepAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_7c6ex")
+volume_db = -10.0
+
+[node name="PlayerAudioListener" type="AudioListener2D" parent="."]
+current = true

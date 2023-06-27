@@ -166,3 +166,4 @@ item_19/icon = SubResource("AtlasTexture_alevl")
 metadata/_edit_use_anchors_ = true
 
 [connection signal="item_activated" from="CharacterList" to="." method="_on_character_list_item_activated"]
+[connection signal="item_selected" from="CharacterList" to="." method="_on_character_list_item_selected"]

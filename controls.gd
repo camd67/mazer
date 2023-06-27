@@ -4,6 +4,8 @@ extends Control
 
 func _ready():
 	back_to_menu_btn.grab_focus()
+	var audio_manager = get_tree().root.get_node("/root/UiAudioManager")
+	audio_manager.RegisterBack(back_to_menu_btn)
 
 
 func _on_back_to_menu_btn_pressed():

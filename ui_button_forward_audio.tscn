@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://g24tgr85iwhx"]
+
+[ext_resource type="AudioStream" uid="uid://djaiyvfbnoc1y" path="res://audio/pluck_001.ogg" id="1_y4l0u"]
+
+[node name="UiButtonForwardAudio" type="AudioStreamPlayer"]
+stream = ExtResource("1_y4l0u")

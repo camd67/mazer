@@ -17,8 +17,12 @@ func _ready():
 	credits_container.remove_child(credits_lbl)
 	credits_container.remove_child(license_lbl)
 	generate_credits()
+	
+	var audio_manager = get_tree().root.get_node("/root/UiAudioManager")
+	audio_manager.RegisterBack(back_to_menu_btn)
+	audio_manager.RegisterForward(show_licenses_btn)
 
-func _process(delta):
+func _process(_delta):
 	# This is not optimized at all. It lags a lot but no one's probably
 	# pressing this anyways...
 	if remaining_licenses.size() > 0:
@@ -54,6 +58,8 @@ func generate_credits():
 	add_credits("Created by: CamD67")
 	add_header("Assets provided by")
 	add_credits("Tilesheet: https://www.kenney.nl/assets/tiny-dungeon\n" \
+	+ "Interface sfx: https://www.kenney.nl/assets/interface-sounds\n" \
+	+ "Impact sfx: https://www.kenney.nl/assets/impact-sounds\n" \
 	+ "Mushroom sprite: https://opengameart.org/content/tiny-mushrooms-16x-minecraft-style\n" \
 	+ "Input icons: https://thoseawesomeguys.com/prompts/\n")	
 

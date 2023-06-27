@@ -105,7 +105,7 @@ public partial class LevelManager : Node2D
         maze.DrawDirectedPath(path.Take(distance).ToArray());
     }
 
-    public override void _UnhandledKeyInput(InputEvent @event)
+    public override void _Input(InputEvent @event)
     {
         // Only pause when the level isn't complete
         if (!levelComplete.Visible && @event.IsActionPressed("pause"))

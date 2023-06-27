@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://gf5sexag3uoe"]
+
+[ext_resource type="Script" path="res://UiAudioManager.cs" id="1_74wv4"]
+[ext_resource type="AudioStream" uid="uid://djaiyvfbnoc1y" path="res://audio/pluck_001.ogg" id="2_x87uo"]
+[ext_resource type="AudioStream" uid="uid://dkmgtu5r543iq" path="res://audio/pluck_002.ogg" id="3_rc2qu"]
+[ext_resource type="AudioStream" uid="uid://fh25un6p1081" path="res://audio/rollover2.ogg" id="4_5c77u"]
+
+[node name="UiAudioManager" type="Node"]
+script = ExtResource("1_74wv4")
+
+[node name="UiForward" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_x87uo")
+
+[node name="UiBack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_rc2qu")
+
+[node name="UiNext" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_5c77u")
+volume_db = -5.0
