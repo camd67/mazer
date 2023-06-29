@@ -15,12 +15,14 @@ public partial class AbilityPath : Node2D
     private Maze maze;
     private Timer pathSpawnTimer;
     private int abilitySfxIndex;
+    private Color color;
 
-    public void Init(Maze maze, int distance, Vector2[] abilityPath)
+    public void Init(Maze maze, int distance, Vector2[] abilityPath, Color color)
     {
         this.maze = maze;
         this.distance = distance;
         this.abilityPath = abilityPath;
+        this.color = color;
     }
 
     public override void _Ready()
@@ -38,14 +40,14 @@ public partial class AbilityPath : Node2D
             return;
         }
 
-        var drawnLocations = maze.DrawDirectedPathAtIndex(abilityPath, abilitySfxIndex);
+        var drawnLocations = maze.DrawDirectedPathAtIndex(abilityPath, abilitySfxIndex, color);
         var globalCellCenters = maze.ConvertCellCoordsToGlobalCenter(drawnLocations);
 
         foreach (var globalCoord in globalCellCenters)
         {
-            var abilitySfx = abilitySfxScene.Instantiate<Node2D>();
+            var abilitySfx = abilitySfxScene.Instantiate<PathSfx>();
             abilitySfx.GlobalPosition = globalCoord;
-            abilitySfx.GetNode<GpuParticles2D>("InitialExplosion").Emitting = true;
+            abilitySfx.color = color;
             AddChild(abilitySfx);
         }
         abilitySfxIndex++;

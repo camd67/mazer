@@ -4,3 +4,4 @@
 log.txt
 *.csproj.old
 *.csproj.old.*
+*.png~

@@ -238,7 +238,7 @@ public partial class PatternManager : TileMap
         return atlasList;
     }
 
-    public List<Vector2I> DrawPath(Vector2I point, Wall pathSides, TileMap otherTileMap)
+    public List<Vector2I> DrawPath(Vector2I point, Wall pathSides, int layerIndex, TileMap otherTileMap)
     {
         var pathsDrawn = new List<Vector2I>();
         // there's probably a better way to do this...
@@ -249,32 +249,32 @@ public partial class PatternManager : TileMap
         {
             var p1 = baseOffset + new Vector2I(1, 0);
             pathsDrawn.Add(p1);
-            otherTileMap.SetCell(1, p1, 1, pathUpDown);
+            otherTileMap.SetCell(layerIndex, p1, 1, pathUpDown);
 
             var p2 = baseOffset + new Vector2I(1, 1);
             pathsDrawn.Add(p2);
-            otherTileMap.SetCell(1, p2, 1, pathUpDown);
+            otherTileMap.SetCell(layerIndex, p2, 1, pathUpDown);
         }
 
         if (pathSides.Has(Wall.Right))
         {
             var p1 = baseOffset + new Vector2I(2, 2);
             pathsDrawn.Add(p1);
-            otherTileMap.SetCell(1, p1, 1, pathLeftRight);
+            otherTileMap.SetCell(layerIndex, p1, 1, pathLeftRight);
         }
 
         if (pathSides.Has(Wall.Down))
         {
             var p1 = baseOffset + new Vector2I(1, 3);
             pathsDrawn.Add(p1);
-            otherTileMap.SetCell(1, p1, 1, pathUpDown);
+            otherTileMap.SetCell(layerIndex, p1, 1, pathUpDown);
         }
 
         if (pathSides.Has(Wall.Left))
         {
             var p1 = baseOffset + new Vector2I(0, 2);
             pathsDrawn.Add(p1);
-            otherTileMap.SetCell(1, p1, 1, pathLeftRight);
+            otherTileMap.SetCell(layerIndex, p1, 1, pathLeftRight);
         }
 
         // Then draw the center
@@ -283,27 +283,27 @@ public partial class PatternManager : TileMap
 
         if (pathSides.Has(Wall.Left.With(Wall.Up)))
         {
-            otherTileMap.SetCell(1, center, 1, pathUpLeft);
+            otherTileMap.SetCell(layerIndex, center, 1, pathUpLeft);
         }
         else if (pathSides.Has(Wall.Right.With(Wall.Up)))
         {
-            otherTileMap.SetCell(1, center, 1, pathUpRight);
+            otherTileMap.SetCell(layerIndex, center, 1, pathUpRight);
         }
         else if (pathSides.Has(Wall.Left.With(Wall.Down)))
         {
-            otherTileMap.SetCell(1, center, 1, pathDownLeft);
+            otherTileMap.SetCell(layerIndex, center, 1, pathDownLeft);
         }
         else if (pathSides.Has(Wall.Right.With(Wall.Down)))
         {
-            otherTileMap.SetCell(1, center, 1, pathDownRight);
+            otherTileMap.SetCell(layerIndex, center, 1, pathDownRight);
         }
         else if (pathSides.Has(Wall.Up.With(Wall.Down)))
         {
-            otherTileMap.SetCell(1, center, 1, pathUpDown);
+            otherTileMap.SetCell(layerIndex, center, 1, pathUpDown);
         }
         else if (pathSides.Has(Wall.Right.With(Wall.Left)))
         {
-            otherTileMap.SetCell(1, center, 1, pathLeftRight);
+            otherTileMap.SetCell(layerIndex, center, 1, pathLeftRight);
         }
 
         return pathsDrawn;

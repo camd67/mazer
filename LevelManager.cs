@@ -100,13 +100,13 @@ public partial class LevelManager : Node2D
         timerLabel.Start();
     }
 
-    private void HandlePlayerAbility(Vector2 location, int distance)
+    private void HandlePlayerAbility(Vector2 location, int distance, Color color)
     {
         var playerLocationIndex = maze.LocationToIndex(location);
         var exitLocationIndex = maze.LocationToIndex(exit.GlobalPosition);
         var path = maze.ComputePath(playerLocationIndex, exitLocationIndex);
         var abilityScene = abilityPathScene.Instantiate<AbilityPath>();
-        abilityScene.Init(maze, distance, path);
+        abilityScene.Init(maze, distance, path, color);
         abilitySfxList.AddChild(abilityScene);
     }
 

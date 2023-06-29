@@ -32,9 +32,11 @@ public partial class Maze : TileMap
 
     private PatternManager patternManager;
     private AStar2D pathfinder;
+    private Dictionary<Color, int> colorsToLayer;
 
     public override void _Ready()
     {
+        colorsToLayer = new Dictionary<Color, int>();
         patternManager = GD.Load<PackedScene>("res://pattern_management.tscn").Instantiate<PatternManager>();
         patternManager.Init();
     }
@@ -205,22 +207,22 @@ public partial class Maze : TileMap
         var lastDirection = Vector2I.Zero;
         for (var i = 0; i < path.Length; i++)
         {
-            DrawDirectedPathAtIndexWorker(path, i, lastDirection);
+            DrawDirectedPathAtIndexWorker(path, i, lastDirection, Colors.Red);
         }
     }
 
-    public List<Vector2I> DrawDirectedPathAtIndex(Vector2[] path, int index)
+    public List<Vector2I> DrawDirectedPathAtIndex(Vector2[] path, int index, Color color)
     {
         // compute our last direction by just looking at the last point (unless we're at the start)
         var lastDirection = index == 0 ? Vector2I.Zero : VectorUtil.ToI(path[index]) - VectorUtil.ToI(path[index - 1]);
-        return DrawDirectedPathAtIndexWorker(path, index, lastDirection);
+        return DrawDirectedPathAtIndexWorker(path, index, lastDirection, color);
     }
 
     /// <summary>
     /// Private helper to draw at a given index in our path.
     /// Takes in the last direction state
     /// </summary>
-    private List<Vector2I> DrawDirectedPathAtIndexWorker(Vector2[] path, int index, Vector2I lastDirection)
+    private List<Vector2I> DrawDirectedPathAtIndexWorker(Vector2[] path, int index, Vector2I lastDirection, Color color)
     {
         // Convert from our vector2 into vector2i for easier manipulation
         var point = VectorUtil.ToI(path[index]);
@@ -238,7 +240,23 @@ public partial class Maze : TileMap
         }
         pathSides = pathSides.With(lastDirection == Vector2I.Zero ? Wall.None : WallExtensions.DirectionToWall[lastDirection]);
 
-        return patternManager.DrawPath(point, pathSides, this);
+        var layerIndex = GetColorLayerIndex(color);
+
+        return patternManager.DrawPath(point, pathSides, layerIndex, this);
+    }
+
+    private int GetColorLayerIndex(Color color)
+    {
+        if (colorsToLayer.TryGetValue(color, out var existingIndex))
+        {
+            return existingIndex;
+        }
+
+        AddLayer(-1);
+        var index = GetLayersCount() - 1;
+        SetLayerModulate(index, color);
+        colorsToLayer[color] = index;
+        return index;
     }
 
     public Vector2 LocationToGlobal(Vector2I location)

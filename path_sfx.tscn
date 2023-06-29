@@ -1,4 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bu0deytums6a8"]
+[gd_scene load_steps=10 format=3 uid="uid://bu0deytums6a8"]
+
+[ext_resource type="Script" path="res://PathSfx.cs" id="1_c2d7w"]
 
 [sub_resource type="Gradient" id="Gradient_d6v2d"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -52,6 +54,7 @@ fill_to = Vector2(0.2, 0.8)
 
 [node name="PathSfx" type="Node2D"]
 light_mask = 2
+script = ExtResource("1_c2d7w")
 
 [node name="InitialExplosion" type="GPUParticles2D" parent="."]
 emitting = false

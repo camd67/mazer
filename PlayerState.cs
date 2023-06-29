@@ -16,10 +16,8 @@ public partial class PlayerState : Node
     public Vector2I playerAtlas;
 
     public PlayerMode mode = PlayerMode.Playing;
-
-    public override void _Ready()
-    {
-    }
+    public Color color;
+    public int characterIndex;
 
     public override void _Process(double delta)
     {

@@ -5,7 +5,7 @@ namespace mazer;
 public partial class Player : CharacterBody2D
 {
     [Signal]
-    public delegate void PlayerAbilityEventHandler(Vector2 location, int distance);
+    public delegate void PlayerAbilityEventHandler(Vector2 location, int distance, Color color);
 
     [Export]
     private float speed = 300;
@@ -21,17 +21,18 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
+        playerState = GetNode<PlayerState>("/root/PlayerState");
         abilityIcon = GetNode<TextureProgressBar>("AbilityUi/AbilityIcon");
         // store and clear our over texture. We'll replace it later
         abilityOverTexture = abilityIcon.TextureOver;
         abilityIcon.TextureOver = null;
+        abilityIcon.TintOver = playerState.color;
 
         abilityCooldown = GetNode<Timer>("AbilityCooldown");
         abilityCooldown.Timeout += () =>
         {
             abilityIcon.TextureOver = abilityOverTexture;
         };
-        playerState = GetNode<PlayerState>("/root/PlayerState");
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         animationPlayer.AssignedAnimation = "bounce_move";
         var sprite = GetNode<Sprite2D>("Sprite");
@@ -76,7 +77,7 @@ public partial class Player : CharacterBody2D
         {
             if (abilityCooldown.TimeLeft <= 0)
             {
-                EmitSignal(SignalName.PlayerAbility, GlobalPosition, abilityDistance);
+                EmitSignal(SignalName.PlayerAbility, GlobalPosition, abilityDistance, playerState.color);
                 abilityCooldown.Start();
                 abilityIcon.TextureOver = null;
             }
