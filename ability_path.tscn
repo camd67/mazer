@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cemjcsd1hnoqp"]
+
+[ext_resource type="Script" path="res://AbilityPath.cs" id="1_3yejb"]
+[ext_resource type="PackedScene" uid="uid://bu0deytums6a8" path="res://path_sfx.tscn" id="2_ltwlf"]
+
+[node name="AbilityPath" type="Node2D"]
+script = ExtResource("1_3yejb")
+abilitySfxScene = ExtResource("2_ltwlf")
+
+[node name="PathSpawnTimer" type="Timer" parent="."]
+wait_time = 0.2

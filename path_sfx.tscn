@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://bu0deytums6a8"]
+
+[sub_resource type="Gradient" id="Gradient_d6v2d"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nqimk"]
+gradient = SubResource("Gradient_d6v2d")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_myjv7"]
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 25.0
+initial_velocity_max = 25.0
+angular_velocity_max = 100.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_nqimk")
+attractor_interaction_enabled = false
+
+[sub_resource type="Gradient" id="Gradient_1ugbk"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7p551"]
+gradient = SubResource("Gradient_1ugbk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_go3wj"]
+emission_shape = 1
+emission_sphere_radius = 15.0
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 1.0
+angular_velocity_min = 1.0
+angular_velocity_max = 10.0
+orbit_velocity_min = 0.1
+orbit_velocity_max = 0.1
+scale_max = 3.0
+color_ramp = SubResource("GradientTexture1D_7p551")
+
+[sub_resource type="Gradient" id="Gradient_u5djw"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nmn38"]
+gradient = SubResource("Gradient_u5djw")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
+[node name="PathSfx" type="Node2D"]
+light_mask = 2
+
+[node name="InitialExplosion" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 15
+process_material = SubResource("ParticleProcessMaterial_myjv7")
+one_shot = true
+explosiveness = 0.7
+visibility_rect = Rect2(0, 0, 0, 0)
+
+[node name="ContinualSparkles" type="GPUParticles2D" parent="."]
+process_material = SubResource("ParticleProcessMaterial_go3wj")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+color = Color(0.329412, 0.329412, 0, 1)
+range_item_cull_mask = 3
+shadow_filter = 1
+shadow_item_cull_mask = 2
+texture = SubResource("GradientTexture2D_nmn38")

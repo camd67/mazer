@@ -238,35 +238,48 @@ public partial class PatternManager : TileMap
         return atlasList;
     }
 
-    public void DrawPath(Vector2I point, Wall pathSides, TileMap otherTileMap)
+    public List<Vector2I> DrawPath(Vector2I point, Wall pathSides, TileMap otherTileMap)
     {
+        var pathsDrawn = new List<Vector2I>();
         // there's probably a better way to do this...
         var baseOffset = point * patternSize;
 
         // First draw the outer edges
         if (pathSides.Has(Wall.Up))
         {
-            otherTileMap.SetCell(1, baseOffset + new Vector2I(1, 0), 1, pathUpDown);
-            otherTileMap.SetCell(1, baseOffset + new Vector2I(1, 1), 1, pathUpDown);
+            var p1 = baseOffset + new Vector2I(1, 0);
+            pathsDrawn.Add(p1);
+            otherTileMap.SetCell(1, p1, 1, pathUpDown);
+
+            var p2 = baseOffset + new Vector2I(1, 1);
+            pathsDrawn.Add(p2);
+            otherTileMap.SetCell(1, p2, 1, pathUpDown);
         }
 
         if (pathSides.Has(Wall.Right))
         {
-            otherTileMap.SetCell(1, baseOffset + new Vector2I(2, 2), 1, pathLeftRight);
+            var p1 = baseOffset + new Vector2I(2, 2);
+            pathsDrawn.Add(p1);
+            otherTileMap.SetCell(1, p1, 1, pathLeftRight);
         }
 
         if (pathSides.Has(Wall.Down))
         {
-            otherTileMap.SetCell(1, baseOffset + new Vector2I(1, 3), 1, pathUpDown);
+            var p1 = baseOffset + new Vector2I(1, 3);
+            pathsDrawn.Add(p1);
+            otherTileMap.SetCell(1, p1, 1, pathUpDown);
         }
 
         if (pathSides.Has(Wall.Left))
         {
-            otherTileMap.SetCell(1, baseOffset + new Vector2I(0, 2), 1, pathLeftRight);
+            var p1 = baseOffset + new Vector2I(0, 2);
+            pathsDrawn.Add(p1);
+            otherTileMap.SetCell(1, p1, 1, pathLeftRight);
         }
 
         // Then draw the center
         var center = baseOffset + new Vector2I(1, 2);
+        pathsDrawn.Add(center);
 
         if (pathSides.Has(Wall.Left.With(Wall.Up)))
         {
@@ -292,5 +305,7 @@ public partial class PatternManager : TileMap
         {
             otherTileMap.SetCell(1, center, 1, pathLeftRight);
         }
+
+        return pathsDrawn;
     }
 }

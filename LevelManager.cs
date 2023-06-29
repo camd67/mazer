@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Godot;
 
 namespace mazer;
@@ -24,6 +22,9 @@ public partial class LevelManager : Node2D
     [Export]
     private Color screenLighterColor = new(.5f, .5f, .5f);
 
+    [Export]
+    private PackedScene abilityPathScene;
+
     private Maze maze;
     private TimerLabel timerLabel;
     private Control levelComplete;
@@ -32,9 +33,11 @@ public partial class LevelManager : Node2D
     private PlayerState playerState;
     private Player player;
     private Area2D exit;
+    private Node2D abilitySfxList;
 
     public override void _Ready()
     {
+        abilitySfxList = GetNode<Node2D>("AbilitySfxList");
         playerState = GetNode<PlayerState>("/root/PlayerState");
         playerState.mode = PlayerState.PlayerMode.Playing;
 
@@ -102,7 +105,9 @@ public partial class LevelManager : Node2D
         var playerLocationIndex = maze.LocationToIndex(location);
         var exitLocationIndex = maze.LocationToIndex(exit.GlobalPosition);
         var path = maze.ComputePath(playerLocationIndex, exitLocationIndex);
-        maze.DrawDirectedPath(path.Take(distance).ToArray());
+        var abilityScene = abilityPathScene.Instantiate<AbilityPath>();
+        abilityScene.Init(maze, distance, path);
+        abilitySfxList.AddChild(abilityScene);
     }
 
     public override void _Input(InputEvent @event)

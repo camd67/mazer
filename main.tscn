@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b6d3pgllrkbfx"]
+[gd_scene load_steps=10 format=3 uid="uid://b6d3pgllrkbfx"]
 
 [ext_resource type="Script" path="res://LevelManager.cs" id="1_unn20"]
 [ext_resource type="PackedScene" uid="uid://dqcy5qsyh44yc" path="res://player.tscn" id="2_4s1ln"]
@@ -8,12 +8,14 @@
 [ext_resource type="Script" path="res://TimerLabel.cs" id="6_74c5o"]
 [ext_resource type="Script" path="res://LevelComplete.gd" id="7_puojk"]
 [ext_resource type="Script" path="res://PauseScreen.gd" id="8_53kef"]
+[ext_resource type="PackedScene" uid="uid://cemjcsd1hnoqp" path="res://ability_path.tscn" id="9_w1ixt"]
 
 [node name="Main" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_unn20")
 playerScene = ExtResource("2_4s1ln")
 exitScene = ExtResource("3_ck1pt")
+abilityPathScene = ExtResource("9_w1ixt")
 
 [node name="Maze" type="TileMap" parent="."]
 light_mask = 2
@@ -34,6 +36,8 @@ minRoomSize = Vector2i(2, 2)
 outerWallPaddingThickness = 10
 roomGenerationAttempts = 200
 minPlayerSpawnDistance = 500.0
+
+[node name="AbilitySfxList" type="Node2D" parent="."]
 
 [node name="GlobalUi" type="CanvasLayer" parent="."]
 

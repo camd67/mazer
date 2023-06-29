@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 namespace mazer;
@@ -198,29 +200,45 @@ public partial class Maze : TileMap
     /// <summary>
     /// Draws a directed path on the maze on the second layer
     /// </summary>
-    public void DrawDirectedPath(Vector2[] points)
+    public void DrawDirectedPath(Vector2[] path)
     {
         var lastDirection = Vector2I.Zero;
-        for (var i = 0; i < points.Length; i++)
+        for (var i = 0; i < path.Length; i++)
         {
-            // Convert from our vector2 into vector2i for easier manipulation
-            var point = VectorUtil.ToI(points[i]);
-
-            // Figure out the direction we're moving in (if we're not on the last point)
-            // that last point will just continue the last direction
-            var pathSides = lastDirection == Vector2I.Zero ? Wall.None : WallExtensions.DirectionToWall[lastDirection].Invert();
-            if (i < points.Length - 1)
-            {
-                lastDirection = VectorUtil.ToI(points[i + 1]) - point;
-            }
-            else
-            {
-                lastDirection = Vector2I.Zero;
-            }
-            pathSides = pathSides.With(lastDirection == Vector2I.Zero ? Wall.None : WallExtensions.DirectionToWall[lastDirection]);
-
-            patternManager.DrawPath(point, pathSides, this);
+            DrawDirectedPathAtIndexWorker(path, i, lastDirection);
         }
+    }
+
+    public List<Vector2I> DrawDirectedPathAtIndex(Vector2[] path, int index)
+    {
+        // compute our last direction by just looking at the last point (unless we're at the start)
+        var lastDirection = index == 0 ? Vector2I.Zero : VectorUtil.ToI(path[index]) - VectorUtil.ToI(path[index - 1]);
+        return DrawDirectedPathAtIndexWorker(path, index, lastDirection);
+    }
+
+    /// <summary>
+    /// Private helper to draw at a given index in our path.
+    /// Takes in the last direction state
+    /// </summary>
+    private List<Vector2I> DrawDirectedPathAtIndexWorker(Vector2[] path, int index, Vector2I lastDirection)
+    {
+        // Convert from our vector2 into vector2i for easier manipulation
+        var point = VectorUtil.ToI(path[index]);
+
+        // Figure out the direction we're moving in (if we're not on the last point)
+        // that last point will just continue the last direction
+        var pathSides = lastDirection == Vector2I.Zero ? Wall.None : WallExtensions.DirectionToWall[lastDirection].Invert();
+        if (index < path.Length - 1)
+        {
+            lastDirection = VectorUtil.ToI(path[index + 1]) - point;
+        }
+        else
+        {
+            lastDirection = Vector2I.Zero;
+        }
+        pathSides = pathSides.With(lastDirection == Vector2I.Zero ? Wall.None : WallExtensions.DirectionToWall[lastDirection]);
+
+        return patternManager.DrawPath(point, pathSides, this);
     }
 
     public Vector2 LocationToGlobal(Vector2I location)
@@ -246,5 +264,11 @@ public partial class Maze : TileMap
     public Vector2[] ComputePath(Vector2I from, Vector2I to)
     {
         return pathfinder.GetPointPath(PointToPathId(from), PointToPathId(to));
+    }
+
+    public IEnumerable<Vector2I> ConvertCellCoordsToGlobalCenter(List<Vector2I> locations)
+    {
+        var halfTile = TileSet.TileSize / 2;
+        return locations.Select(loc => loc * TileSet.TileSize + halfTile);
     }
 }
